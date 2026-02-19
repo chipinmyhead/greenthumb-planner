@@ -8,6 +8,7 @@ import BottomNav from "@/components/BottomNav";
 import Dashboard from "@/pages/Dashboard";
 import GardenPage from "@/pages/GardenPage";
 import CalendarPage from "@/pages/CalendarPage";
+import PlanPage from "@/pages/PlanPage";
 import AddPlantPage from "@/pages/AddPlantPage";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
               <Route path="/" element={<Dashboard />} />
               <Route path="/garden" element={<GardenPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="/plan" element={<PlanPage />} />
               <Route path="/add" element={<AddPlantPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

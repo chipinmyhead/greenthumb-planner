@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
-import { GardenPlant, MaintenanceTask } from "@/types/plants";
+import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import { GardenPlant, MaintenanceTask, MaintenanceCadence, MaintenanceSession } from "@/types/plants";
 import { PLANT_DATABASE } from "@/data/plantDatabase";
-import { addDays, format, isToday, isBefore, startOfDay } from "date-fns";
+import { addDays, addWeeks, addMonths, format, isBefore, startOfDay, startOfWeek, endOfWeek, eachWeekOfInterval, eachMonthOfInterval, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
 interface GardenContextType {
   gardenPlants: GardenPlant[];
@@ -12,6 +12,11 @@ interface GardenContextType {
   todayTasks: MaintenanceTask[];
   upcomingTasks: MaintenanceTask[];
   overdueTasks: MaintenanceTask[];
+  cadence: MaintenanceCadence;
+  setCadence: (c: MaintenanceCadence) => void;
+  maintenanceSessions: MaintenanceSession[];
+  preferredDay: number;
+  setPreferredDay: (d: number) => void;
 }
 
 const GardenContext = createContext<GardenContextType | null>(null);
@@ -100,9 +105,68 @@ function getInitialGardenPlants(): GardenPlant[] {
   ];
 }
 
+function buildSessions(
+  tasks: MaintenanceTask[],
+  cadence: MaintenanceCadence,
+  preferredDay: number
+): MaintenanceSession[] {
+  const incompleteTasks = tasks.filter((t) => !t.completed);
+  if (incompleteTasks.length === 0) return [];
+
+  const today = startOfDay(new Date());
+  const lookAhead = cadence === "monthly" ? addMonths(today, 3) : cadence === "biweekly" ? addWeeks(today, 8) : addWeeks(today, 6);
+
+  const sessions: MaintenanceSession[] = [];
+
+  if (cadence === "monthly") {
+    const months = eachMonthOfInterval({ start: today, end: lookAhead });
+    months.forEach((monthStart, i) => {
+      const mStart = startOfMonth(monthStart);
+      const mEnd = endOfMonth(monthStart);
+      const sessionTasks = incompleteTasks.filter((t) => {
+        const d = new Date(t.dueDate);
+        return isWithinInterval(d, { start: mStart, end: mEnd }) || (isBefore(d, mStart) && i === 0);
+      });
+      if (sessionTasks.length > 0) {
+        sessions.push({
+          id: `session-${format(mStart, "yyyy-MM")}`,
+          label: format(mStart, "MMMM yyyy"),
+          dateRange: { start: format(mStart, "yyyy-MM-dd"), end: format(mEnd, "yyyy-MM-dd") },
+          tasks: sessionTasks,
+        });
+      }
+    });
+  } else {
+    const weekInterval = cadence === "biweekly" ? 2 : 1;
+    const weeks = eachWeekOfInterval({ start: today, end: lookAhead }, { weekStartsOn: 0 });
+    const filteredWeeks = weeks.filter((_, i) => i % weekInterval === 0);
+
+    filteredWeeks.forEach((weekStart, i) => {
+      const wStart = startOfWeek(weekStart, { weekStartsOn: 0 });
+      const wEnd = endOfWeek(weekStart, { weekStartsOn: 0 });
+      const sessionTasks = incompleteTasks.filter((t) => {
+        const d = new Date(t.dueDate);
+        return isWithinInterval(d, { start: wStart, end: wEnd }) || (isBefore(d, wStart) && i === 0);
+      });
+      if (sessionTasks.length > 0) {
+        sessions.push({
+          id: `session-${format(wStart, "yyyy-MM-dd")}`,
+          label: `Week of ${format(wStart, "MMM d")}`,
+          dateRange: { start: format(wStart, "yyyy-MM-dd"), end: format(wEnd, "yyyy-MM-dd") },
+          tasks: sessionTasks,
+        });
+      }
+    });
+  }
+
+  return sessions;
+}
+
 export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [gardenPlants, setGardenPlants] = useState<GardenPlant[]>(getInitialGardenPlants);
   const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
+  const [cadence, setCadence] = useState<MaintenanceCadence>("weekly");
+  const [preferredDay, setPreferredDay] = useState<number>(6); // Saturday
 
   const allTasks = generateTasks(gardenPlants).map((t) => ({
     ...t,
@@ -118,6 +182,11 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   );
   const upcomingTasks = allTasks.filter(
     (t) => !isBefore(new Date(t.dueDate), today) && t.dueDate !== todayStr && !t.completed
+  );
+
+  const maintenanceSessions = useMemo(
+    () => buildSessions(allTasks, cadence, preferredDay),
+    [allTasks, cadence, preferredDay]
   );
 
   const addPlant = useCallback((plantId: string, zone: string) => {
@@ -138,7 +207,6 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const completeTask = useCallback((taskId: string) => {
     setCompletedTaskIds((prev) => new Set(prev).add(taskId));
-    // Also update the last maintenance date on the garden plant
     setGardenPlants((prev) =>
       prev.map((gp) => {
         if (taskId.startsWith(gp.id)) {
@@ -163,6 +231,11 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         todayTasks,
         upcomingTasks,
         overdueTasks,
+        cadence,
+        setCadence,
+        maintenanceSessions,
+        preferredDay,
+        setPreferredDay,
       }}
     >
       {children}
