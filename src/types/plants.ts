@@ -58,3 +58,12 @@ export const CATEGORY_ICONS: Record<PlantCategory, string> = {
   herb: "🌿",
   vine: "🍇",
 };
+
+export type MaintenanceCadence = "weekly" | "biweekly" | "monthly";
+
+export interface MaintenanceSession {
+  id: string;
+  label: string;
+  dateRange: { start: string; end: string };
+  tasks: MaintenanceTask[];
+}

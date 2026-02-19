@@ -1,10 +1,11 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, Flower2, Calendar, Plus } from "lucide-react";
+import { Home, Flower2, Calendar, ClipboardList, Plus } from "lucide-react";
 import { motion } from "framer-motion";
 
 const tabs = [
   { to: "/", icon: Home, label: "Home" },
   { to: "/garden", icon: Flower2, label: "Garden" },
+  { to: "/plan", icon: ClipboardList, label: "Plan" },
   { to: "/calendar", icon: Calendar, label: "Calendar" },
   { to: "/add", icon: Plus, label: "Add" },
 ];
