@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
 import TaskCard from "@/components/TaskCard";
 import { format } from "date-fns";
-import { Droplets, Scissors, Leaf, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
+import WeatherTile from "@/components/WeatherTile";
 
 const Dashboard = () => {
   const { todayTasks, overdueTasks, upcomingTasks, gardenPlants } = useGarden();
@@ -116,6 +117,16 @@ const Dashboard = () => {
             <p className="text-sm text-muted-foreground">No upcoming tasks</p>
           </div>
         )}
+      </motion.section>
+
+      {/* Weather tile */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35 }}
+        className="mt-6"
+      >
+        <WeatherTile />
       </motion.section>
     </div>
   );
