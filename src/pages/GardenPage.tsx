@@ -1,13 +1,22 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
-import { CATEGORY_ICONS } from "@/types/plants";
-import { Trash2, Droplets, Sun, Wind } from "lucide-react";
+import { CATEGORY_ICONS, GardenPlant } from "@/types/plants";
+import { Trash2, Droplets, Sun, Wind, Info } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 
 const sunLabels = { full: "Full Sun", partial: "Partial", shade: "Shade" };
 const waterLabels = { low: "Low", medium: "Medium", high: "High" };
 
 const GardenPage = () => {
   const { gardenPlants, removePlant } = useGarden();
+  const [selectedPlant, setSelectedPlant] = useState<GardenPlant | null>(null);
 
   return (
     <div className="px-4 pt-12 pb-24 max-w-lg mx-auto">
@@ -58,12 +67,20 @@ const GardenPage = () => {
                   {gp.plant.notes}
                 </p>
               </div>
-              <button
-                onClick={() => removePlant(gp.id)}
-                className="p-2 rounded-full hover:bg-destructive/10 transition-colors"
-              >
-                <Trash2 className="w-4 h-4 text-destructive" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setSelectedPlant(gp)}
+                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                >
+                  <Info className="w-4 h-4 text-muted-foreground" />
+                </button>
+                <button
+                  onClick={() => removePlant(gp.id)}
+                  className="p-2 rounded-full hover:bg-destructive/10 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4 text-destructive" />
+                </button>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -76,8 +93,63 @@ const GardenPage = () => {
           </div>
         )}
       </div>
+
+      <Sheet open={!!selectedPlant} onOpenChange={(open) => !open && setSelectedPlant(null)}>
+        <SheetContent side="bottom" className="rounded-t-2xl max-h-[80vh] overflow-y-auto">
+          {selectedPlant && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2 text-xl">
+                  <span className="text-3xl">{selectedPlant.plant.image}</span>
+                  {selectedPlant.plant.name}
+                </SheetTitle>
+                <SheetDescription className="italic">
+                  {selectedPlant.plant.scientificName}
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="mt-5 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                    {CATEGORY_ICONS[selectedPlant.plant.category]} {selectedPlant.plant.category}
+                  </span>
+                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                    {selectedPlant.plant.hardiness}
+                  </span>
+                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                    📍 {selectedPlant.zone}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <DetailItem icon={<Sun className="w-4 h-4 text-sun" />} label="Sunlight" value={sunLabels[selectedPlant.plant.sunlight]} />
+                  <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Needs" value={waterLabels[selectedPlant.plant.waterNeeds]} />
+                  <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Every" value={`${selectedPlant.plant.waterFrequencyDays} days`} />
+                  <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Fertilize Every" value={`${selectedPlant.plant.fertilizerFrequencyDays} days`} />
+                  <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
+                </div>
+
+                <div className="bg-secondary/50 rounded-xl p-3">
+                  <p className="text-xs font-medium text-foreground mb-1">Care Notes</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.notes}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
+
+const DetailItem = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
+  <div className="bg-secondary/50 rounded-xl p-3 flex items-start gap-2">
+    {icon}
+    <div>
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-sm font-medium text-foreground">{value}</p>
+    </div>
+  </div>
+);
 
 export default GardenPage;
