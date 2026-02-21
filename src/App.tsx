@@ -11,6 +11,7 @@ import GardenPage from "@/pages/GardenPage";
 import CalendarPage from "@/pages/CalendarPage";
 import PlanPage from "@/pages/PlanPage";
 import AddPlantPage from "@/pages/AddPlantPage";
+import LearnPage from "@/pages/LearnPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/plan" element={<PlanPage />} />
                 <Route path="/add" element={<AddPlantPage />} />
+                <Route path="/learn" element={<LearnPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <BottomNav />

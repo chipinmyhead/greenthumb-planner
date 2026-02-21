@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, Flower2, Calendar, ClipboardList, Plus } from "lucide-react";
+import { Home, Flower2, Calendar, ClipboardList, Plus, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 
 const tabs = [
@@ -8,6 +8,7 @@ const tabs = [
   { to: "/plan", icon: ClipboardList, label: "Plan" },
   { to: "/calendar", icon: Calendar, label: "Calendar" },
   { to: "/add", icon: Plus, label: "Add" },
+  { to: "/learn", icon: BookOpen, label: "Learn" },
 ];
 
 const BottomNav = () => {
