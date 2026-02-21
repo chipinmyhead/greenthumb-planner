@@ -13,6 +13,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "partial",
     waterNeeds: "medium",
     hardiness: "USDA 5-8",
+    fertilizerType: "Balanced 10-10-10 granular in early spring",
     notes: "Keep soil consistently moist. Prune to shape in late spring.",
   },
   {
@@ -27,6 +28,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "full",
     waterNeeds: "low",
     hardiness: "USDA 5-9",
+    fertilizerType: "Low-nitrogen bone meal or light compost",
     notes: "Drought-tolerant once established. Prune after flowering.",
   },
   {
@@ -41,6 +43,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "partial",
     waterNeeds: "high",
     hardiness: "USDA 5-9",
+    fertilizerType: "Acidic fertilizer (e.g. Holly-tone) in spring",
     notes: "Water deeply. Prune old-wood varieties after flowering.",
   },
   {
@@ -55,6 +58,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "partial",
     waterNeeds: "medium",
     hardiness: "USDA 5-8",
+    fertilizerType: "Slow-release acidic fertilizer in early spring",
     notes: "Protect from harsh afternoon sun. Prune in late winter.",
   },
   {
@@ -69,6 +73,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "full",
     waterNeeds: "high",
     hardiness: "USDA 4-9",
+    fertilizerType: "Rose-specific fertilizer (high phosphorus, e.g. 4-8-4)",
     notes: "Deadhead spent blooms. Feed every 2 weeks during growing season.",
   },
   {
@@ -83,6 +88,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "full",
     waterNeeds: "medium",
     hardiness: "USDA 7-10",
+    fertilizerType: "High-nitrogen lawn fertilizer (e.g. 28-3-8) in late spring",
     notes: "Mow to 1-1.5 inches. Water deeply but infrequently.",
   },
   {
@@ -97,6 +103,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "shade",
     waterNeeds: "medium",
     hardiness: "USDA 3-9",
+    fertilizerType: "Balanced slow-release 10-10-10 in spring",
     notes: "Great for shade gardens. Divide every 3-4 years.",
   },
   {
@@ -111,6 +118,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "full",
     waterNeeds: "medium",
     hardiness: "USDA 4-9",
+    fertilizerType: "Low-nitrogen liquid fertilizer (e.g. 5-10-10) monthly",
     notes: "Roots prefer shade, tops prefer sun. Prune by group type.",
   },
   {
@@ -125,6 +133,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "full",
     waterNeeds: "low",
     hardiness: "USDA 3-9",
+    fertilizerType: "Diluted cactus/succulent fertilizer sparingly in spring",
     notes: "Very drought-tolerant. Cut back in early spring.",
   },
   {
@@ -139,6 +148,7 @@ export const PLANT_DATABASE: Plant[] = [
     sunlight: "partial",
     waterNeeds: "medium",
     hardiness: "USDA 5-8",
+    fertilizerType: "Acidic fertilizer for rhododendrons (e.g. Holly-tone)",
     notes: "Acidic soil preferred. Prune right after flowering.",
   },
 ];

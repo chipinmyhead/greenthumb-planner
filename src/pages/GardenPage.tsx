@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
 import { CATEGORY_ICONS, GardenPlant } from "@/types/plants";
-import { Trash2, Droplets, Sun, Wind, Info } from "lucide-react";
+import { Trash2, Droplets, Sun, Wind, Info, FlaskConical } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -48,7 +48,7 @@ const GardenPage = () => {
                 <p className="text-xs text-muted-foreground italic">{gp.plant.scientificName}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">📍 {gp.zone}</p>
 
-                <div className="flex items-center gap-4 mt-3">
+                <div className="flex items-center gap-4 mt-3 flex-wrap">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Droplets className="w-3.5 h-3.5 text-water" />
                     {waterLabels[gp.plant.waterNeeds]}
@@ -61,6 +61,10 @@ const GardenPage = () => {
                     <Wind className="w-3.5 h-3.5 text-sage" />
                     {gp.plant.hardiness}
                   </div>
+                </div>
+                <div className="flex items-start gap-1 mt-2 text-xs text-muted-foreground">
+                  <FlaskConical className="w-3.5 h-3.5 text-leaf shrink-0 mt-0.5" />
+                  <span>{gp.plant.fertilizerType}</span>
                 </div>
 
                 <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
@@ -127,6 +131,14 @@ const GardenPage = () => {
                   <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Every" value={`${selectedPlant.plant.waterFrequencyDays} days`} />
                   <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Fertilize Every" value={`${selectedPlant.plant.fertilizerFrequencyDays} days`} />
                   <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
+                </div>
+
+                <div className="bg-secondary/50 rounded-xl p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <FlaskConical className="w-4 h-4 text-leaf" />
+                    <p className="text-xs font-medium text-foreground">Recommended Fertilizer</p>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.fertilizerType}</p>
                 </div>
 
                 <div className="bg-secondary/50 rounded-xl p-3">
