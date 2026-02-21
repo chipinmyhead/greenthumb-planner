@@ -4,6 +4,7 @@ import TaskCard from "@/components/TaskCard";
 import { format } from "date-fns";
 import { AlertTriangle } from "lucide-react";
 import WeatherTile from "@/components/WeatherTile";
+import YardHealthSummary from "@/components/YardHealthSummary";
 
 const Dashboard = () => {
   const { todayTasks, overdueTasks, upcomingTasks, gardenPlants } = useGarden();
@@ -49,6 +50,9 @@ const Dashboard = () => {
           </div>
         ))}
       </motion.div>
+
+      {/* Yard Health */}
+      <YardHealthSummary />
 
       {/* Overdue tasks */}
       {overdueTasks.length > 0 && (
