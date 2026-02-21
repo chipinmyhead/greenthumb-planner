@@ -10,6 +10,7 @@ export interface Plant {
   sunlight: "full" | "partial" | "shade";
   waterNeeds: "low" | "medium" | "high";
   hardiness: string;
+  fertilizerType: string;
   notes: string;
 }
 
