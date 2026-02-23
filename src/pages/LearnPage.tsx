@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Droplets, Sun, Leaf, FlaskConical, Bug, Thermometer, PawPrint, ChevronRight } from "lucide-react";
+import { Droplets, Sun, Leaf, FlaskConical, Bug, Thermometer, PawPrint, Scissors, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import {
   Accordion,
@@ -182,6 +182,38 @@ const tips: Tip[] = [
       {
         heading: "Designing a Pet-Friendly Yard",
         body: "Use raised beds or fencing to keep pets away from any questionable plants. Create a designated digging area with loose soil to redirect behavior. Avoid cocoa mulch (toxic to dogs) — use cedar or pine bark instead. Skip chemical pesticides in areas your pets frequent.",
+      },
+    ],
+  },
+  {
+    id: "pruning",
+    icon: <Scissors className="w-5 h-5 text-leaf" />,
+    title: "Pruning Tips & Techniques",
+    summary: "Learn when and how to prune for healthier plants.",
+    sections: [
+      {
+        heading: "Key Pruning Terms",
+        body: "**Heading back** means cutting a branch to a bud or side branch to encourage bushier growth. **Thinning** removes an entire branch at its point of origin to open up the plant and improve airflow. **Deadheading** is removing spent flowers to redirect energy into new blooms. **Pinching** means using your fingers to nip soft new growth tips, promoting branching in herbs and annuals. **Topping** (cutting the main leader) is generally harmful to trees and should be avoided.",
+      },
+      {
+        heading: "The Three-Cut Method for Large Branches",
+        body: "For branches thicker than 1.5 inches, always use three cuts to prevent bark tearing. Cut 1: Make an undercut 12–18 inches from the trunk, sawing about one-third through. Cut 2: Saw from the top, a few inches farther out — the branch will snap cleanly. Cut 3: Remove the remaining stub just outside the branch collar (the swollen ring where the branch meets the trunk). Never cut flush with the trunk.",
+      },
+      {
+        heading: "When to Prune",
+        body: "**Spring-flowering shrubs** (lilac, forsythia, azalea): prune right after they finish blooming, since they set next year's buds in summer. **Summer-flowering shrubs** (butterfly bush, crape myrtle): prune in late winter or early spring before new growth. **Deciduous trees**: prune while dormant in late winter. **Evergreens**: light shaping in late spring after new growth (called 'candles') has emerged. Avoid heavy pruning in fall — it can stimulate tender growth before frost.",
+      },
+      {
+        heading: "How Much to Remove",
+        body: "The general rule is never remove more than one-third of a plant's total growth in one season. For rejuvenation of overgrown shrubs, remove one-third of the oldest stems at ground level each year for three years. For hedges, keep the top slightly narrower than the base so sunlight reaches lower branches. Always step back frequently to check your shape.",
+      },
+      {
+        heading: "Tools & Clean Cuts",
+        body: "Use bypass pruners (not anvil) for clean cuts on live wood — anvil types crush stems. Loppers handle branches up to 1.5 inches; pruning saws for anything larger. Always cut at a 45° angle about ¼ inch above an outward-facing bud so water runs away from the bud. Disinfect blades with rubbing alcohol between plants to prevent spreading disease. Keep tools sharp — ragged cuts heal slowly and invite infection.",
+      },
+      {
+        heading: "Common Pruning Mistakes",
+        body: "**Topping trees** destroys natural form and creates weak, hazardous regrowth. **Leaving stubs** invites rot — always cut back to a bud, branch, or the collar. **Shearing everything** into balls or boxes removes flowering wood and weakens interior growth. **Pruning at the wrong time** can eliminate an entire season of blooms. **Lion-tailing** (stripping interior branches and leaving tufts at the ends) makes branches weak and prone to breaking in storms.",
       },
     ],
   },
