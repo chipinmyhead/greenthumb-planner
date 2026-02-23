@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Droplets, Sun, Leaf, FlaskConical, Bug, Thermometer, ChevronRight } from "lucide-react";
+import { Droplets, Sun, Leaf, FlaskConical, Bug, Thermometer, PawPrint, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import {
   Accordion,
@@ -158,6 +158,30 @@ const tips: Tip[] = [
       {
         heading: "When to Refresh",
         body: "Top up mulch once or twice a year as it decomposes. Spring is ideal — after the soil has warmed but before summer heat. Remove old, matted mulch if it's forming a water-repellent layer before adding fresh material.",
+      },
+    ],
+  },
+  {
+    id: "pet-safe",
+    icon: <PawPrint className="w-5 h-5 text-primary" />,
+    title: "Pet-Safe Plant Choices",
+    summary: "Keep your furry friends safe in the yard.",
+    sections: [
+      {
+        heading: "Common Toxic Plants to Avoid",
+        body: "Many popular garden plants are toxic to dogs and cats. Lilies (especially dangerous for cats), sago palms, azaleas, oleander, and foxglove can cause serious illness or worse. Before planting, always check the ASPCA's toxic plant database.",
+      },
+      {
+        heading: "Safe Alternatives for Color",
+        body: "Swap risky plants for pet-friendly options that still look great. Sunflowers, zinnias, snapdragons, petunias, and marigolds are all non-toxic and add vibrant color. For shrubs, consider rose bushes (thorns aside), camellias, or hibiscus.",
+      },
+      {
+        heading: "Pet-Safe Herbs & Edibles",
+        body: "Many herbs are safe and useful: basil, rosemary, thyme, sage, and cilantro. Catmint and cat grass are favorites for felines. Avoid garlic, onion, and chive plants, which are toxic to both dogs and cats.",
+      },
+      {
+        heading: "Designing a Pet-Friendly Yard",
+        body: "Use raised beds or fencing to keep pets away from any questionable plants. Create a designated digging area with loose soil to redirect behavior. Avoid cocoa mulch (toxic to dogs) — use cedar or pine bark instead. Skip chemical pesticides in areas your pets frequent.",
       },
     ],
   },
