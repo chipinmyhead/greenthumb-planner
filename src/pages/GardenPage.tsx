@@ -2,7 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
 import { CATEGORY_ICONS, GardenPlant } from "@/types/plants";
-import { Trash2, Droplets, Sun, Wind, Info, FlaskConical } from "lucide-react";
+import { Trash2, Droplets, Sun, Wind, Info, FlaskConical, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
   Sheet,
   SheetContent,
@@ -16,15 +17,24 @@ const waterLabels = { low: "Low", medium: "Medium", high: "High" };
 
 const GardenPage = () => {
   const { gardenPlants, removePlant } = useGarden();
+  const navigate = useNavigate();
   const [selectedPlant, setSelectedPlant] = useState<GardenPlant | null>(null);
 
   return (
     <div className="px-4 pt-12 pb-24 max-w-lg mx-auto">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-foreground">My Garden</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          {gardenPlants.length} plant{gardenPlants.length !== 1 ? "s" : ""} in your landscape
-        </p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">My Garden</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {gardenPlants.length} plant{gardenPlants.length !== 1 ? "s" : ""} in your landscape
+          </p>
+        </div>
+        <button
+          onClick={() => navigate("/add")}
+          className="mt-1 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          <Plus className="w-5 h-5" />
+        </button>
       </motion.div>
 
       <div className="mt-6 space-y-3">
