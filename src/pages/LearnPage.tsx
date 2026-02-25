@@ -244,12 +244,12 @@ const LearnPage = () => {
             transition={{ delay: index * 0.06 }}
           >
             {expandedTip === tip.id ? (
-              <div className="bg-card rounded-2xl border border-border overflow-hidden">
+              <div className="bg-card rounded-xl border border-border overflow-hidden">
                 <button
                   onClick={() => setExpandedTip(null)}
                   className="w-full flex items-center gap-3 p-4 text-left"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     {tip.icon}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -282,9 +282,9 @@ const LearnPage = () => {
             ) : (
               <button
                 onClick={() => setExpandedTip(tip.id)}
-                className="w-full bg-card rounded-2xl border border-border p-4 flex items-center gap-3 text-left hover:border-primary/30 transition-colors"
+                className="w-full bg-card rounded-xl border border-border p-4 flex items-center gap-3 text-left hover:border-primary/30 transition-colors"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                   {tip.icon}
                 </div>
                 <div className="flex-1 min-w-0">

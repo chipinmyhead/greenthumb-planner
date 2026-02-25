@@ -42,7 +42,7 @@ const TaskCard = ({ task, index }: TaskCardProps) => {
       transition={{ delay: index * 0.05 }}
       className="space-y-0"
     >
-      <div className={`flex items-center gap-3 p-3 rounded-xl border ${typeColorClasses[task.type]} ${showSuggestion ? "rounded-b-none" : ""}`}>
+      <div className={`flex items-center gap-3 p-3 rounded-lg border ${typeColorClasses[task.type]} ${showSuggestion ? "rounded-b-none" : ""}`}>
         <span className="text-2xl">{TASK_ICONS[task.type]}</span>
         <div className="flex-1 min-w-0">
           <p className="font-medium text-sm text-foreground truncate">{task.plantName}</p>
@@ -57,7 +57,7 @@ const TaskCard = ({ task, index }: TaskCardProps) => {
       </div>
 
       {showSuggestion && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-water/10 border border-t-0 border-water/20 rounded-b-xl">
+        <div className="flex items-center gap-2 px-3 py-2 bg-water/10 border border-t-0 border-water/20 rounded-b-lg">
           <CloudRain className="w-3.5 h-3.5 text-water shrink-0" />
           <p className="text-[11px] text-muted-foreground flex-1">{rainSuggestion!.reason}</p>
           <button

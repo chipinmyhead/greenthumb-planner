@@ -42,7 +42,7 @@ const Dashboard = () => {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="bg-card rounded-2xl p-4 text-center border border-border"
+            className="bg-card rounded-xl p-4 text-center border border-border"
           >
             <span className="text-2xl">{stat.icon}</span>
             <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
@@ -94,7 +94,7 @@ const Dashboard = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-card rounded-2xl border border-border p-6 text-center">
+          <div className="bg-card rounded-xl border border-border p-6 text-center">
             <span className="text-3xl">🎉</span>
             <p className="text-sm text-muted-foreground mt-2">All caught up for today!</p>
           </div>
@@ -117,7 +117,7 @@ const Dashboard = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-card rounded-2xl border border-border p-6 text-center">
+          <div className="bg-card rounded-xl border border-border p-6 text-center">
             <p className="text-sm text-muted-foreground">No upcoming tasks</p>
           </div>
         )}
