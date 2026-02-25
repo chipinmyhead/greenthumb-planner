@@ -34,21 +34,21 @@ const AddPlantPage = () => {
   };
 
   return (
-    <div className="px-4 pt-12 pb-24 max-w-lg mx-auto">
+    <div className="px-5 pt-14 pb-28 max-w-lg mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-foreground">Add Plants</h1>
-        <p className="text-sm text-muted-foreground mt-1">Browse the plant library</p>
+        <h1 className="text-4xl text-foreground">Add Plants</h1>
+        <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mt-2">Browse the plant library</p>
       </motion.div>
 
       {/* Search */}
-      <div className="relative mt-5">
+      <div className="relative mt-6">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           placeholder="Search plants..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-md text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
       </div>
 
@@ -56,10 +56,10 @@ const AddPlantPage = () => {
       <div className="flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
         <button
           onClick={() => setSelectedCategory("all")}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+          className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-medium whitespace-nowrap transition-colors ${
             selectedCategory === "all"
               ? "bg-primary text-primary-foreground"
-              : "bg-card border border-border text-muted-foreground"
+              : "border border-border text-muted-foreground"
           }`}
         >
           All
@@ -68,10 +68,10 @@ const AddPlantPage = () => {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-medium whitespace-nowrap transition-colors ${
               selectedCategory === cat
                 ? "bg-primary text-primary-foreground"
-                : "bg-card border border-border text-muted-foreground"
+                : "border border-border text-muted-foreground"
             }`}
           >
             {CATEGORY_ICONS[cat]} {cat}
@@ -81,11 +81,11 @@ const AddPlantPage = () => {
 
       {/* Zone selector */}
       <div className="mt-4">
-        <label className="text-xs font-medium text-muted-foreground mb-1 block">Add to zone:</label>
+        <label className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground mb-1.5 block">Add to zone</label>
         <select
           value={selectedZone}
           onChange={(e) => setSelectedZone(e.target.value)}
-          className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full px-3 py-2.5 bg-card border border-border rounded-md text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
         >
           {zones.map((z) => (
             <option key={z} value={z}>{z}</option>
@@ -94,7 +94,7 @@ const AddPlantPage = () => {
       </div>
 
       {/* Plant list */}
-      <div className="mt-5 space-y-3">
+      <div className="mt-6 space-y-3">
         {filtered.map((plant, i) => {
           const alreadyAdded = existingIds.has(plant.id);
           return (
@@ -103,18 +103,18 @@ const AddPlantPage = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
-              className="bg-card rounded-xl border border-border p-4"
+              className="bg-card rounded-md border border-border p-4"
             >
               <div className="flex items-start gap-3">
                 <span className="text-3xl">{plant.image}</span>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-sm text-foreground">{plant.name}</h3>
-                  <p className="text-xs text-muted-foreground italic">{plant.scientificName}</p>
+                  <p className="text-[11px] text-muted-foreground italic">{plant.scientificName}</p>
                   <div className="flex items-center gap-3 mt-2">
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                       <Droplets className="w-3 h-3 text-water" />{waterLabels[plant.waterNeeds]}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
                       <Sun className="w-3 h-3 text-sun" />{sunLabels[plant.sunlight]}
                     </span>
                   </div>
@@ -122,7 +122,7 @@ const AddPlantPage = () => {
                 <button
                   onClick={() => handleAdd(plant.id)}
                   disabled={alreadyAdded}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-semibold transition-all ${
                     alreadyAdded
                       ? "bg-muted text-muted-foreground"
                       : "bg-primary text-primary-foreground hover:scale-105 active:scale-95"
