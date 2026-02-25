@@ -119,7 +119,7 @@ const YardHealthSummary = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.12 }}
-      className="bg-card rounded-2xl border border-border p-4 mb-8"
+      className="bg-card rounded-xl border border-border p-4 mb-8"
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">

@@ -44,7 +44,7 @@ const GardenPage = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
-            className="bg-card rounded-2xl border border-border p-4"
+            className="bg-card rounded-xl border border-border p-4"
           >
             <div className="flex items-start gap-3">
               <span className="text-3xl">{gp.plant.image}</span>
@@ -100,7 +100,7 @@ const GardenPage = () => {
         ))}
 
         {gardenPlants.length === 0 && (
-          <div className="bg-card rounded-2xl border border-border p-8 text-center">
+          <div className="bg-card rounded-xl border border-border p-8 text-center">
             <span className="text-4xl">🌱</span>
             <p className="text-muted-foreground mt-2">Your garden is empty</p>
             <p className="text-xs text-muted-foreground">Add plants from the + tab</p>
@@ -109,7 +109,7 @@ const GardenPage = () => {
       </div>
 
       <Sheet open={!!selectedPlant} onOpenChange={(open) => !open && setSelectedPlant(null)}>
-        <SheetContent side="bottom" className="rounded-t-2xl max-h-[80vh] overflow-y-auto">
+        <SheetContent side="bottom" className="rounded-t-xl max-h-[80vh] overflow-y-auto">
           {selectedPlant && (
             <>
               <SheetHeader>
@@ -143,7 +143,7 @@ const GardenPage = () => {
                   <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
                 </div>
 
-                <div className="bg-secondary/50 rounded-xl p-3">
+                <div className="bg-secondary/50 rounded-lg p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <FlaskConical className="w-4 h-4 text-leaf" />
                     <p className="text-xs font-medium text-foreground">Recommended Fertilizer</p>
@@ -151,7 +151,7 @@ const GardenPage = () => {
                   <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.fertilizerType}</p>
                 </div>
 
-                <div className="bg-secondary/50 rounded-xl p-3">
+                <div className="bg-secondary/50 rounded-lg p-3">
                   <p className="text-xs font-medium text-foreground mb-1">Care Notes</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.notes}</p>
                 </div>
@@ -165,7 +165,7 @@ const GardenPage = () => {
 };
 
 const DetailItem = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="bg-secondary/50 rounded-xl p-3 flex items-start gap-2">
+  <div className="bg-secondary/50 rounded-lg p-3 flex items-start gap-2">
     {icon}
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>

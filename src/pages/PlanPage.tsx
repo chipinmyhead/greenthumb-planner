@@ -28,7 +28,7 @@ const PlanPage = () => {
           <h1 className="text-3xl font-bold text-foreground">Plan</h1>
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="p-2 rounded-xl bg-card border border-border hover:bg-muted transition-colors"
+            className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors"
           >
             <Settings2 className="w-5 h-5 text-muted-foreground" />
           </button>
@@ -47,7 +47,7 @@ const PlanPage = () => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-4 rounded-2xl bg-card border border-border space-y-4">
+            <div className="mt-4 p-4 rounded-xl bg-card border border-border space-y-4">
               <div>
                 <p className="text-sm font-semibold text-foreground mb-2">Cadence</p>
                 <div className="grid grid-cols-3 gap-2">
@@ -55,7 +55,7 @@ const PlanPage = () => {
                     <button
                       key={opt.value}
                       onClick={() => setCadence(opt.value)}
-                      className={`p-3 rounded-xl border text-center transition-all ${
+                      className={`p-3 rounded-lg border text-center transition-all ${
                         cadence === opt.value
                           ? "bg-primary text-primary-foreground border-primary"
                           : "bg-card border-border hover:bg-muted text-foreground"
@@ -101,7 +101,7 @@ const PlanPage = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-card rounded-2xl border border-border p-8 text-center"
+            className="bg-card rounded-xl border border-border p-8 text-center"
           >
             <p className="text-4xl mb-2">🎉</p>
             <p className="text-sm text-muted-foreground">All caught up! No upcoming tasks.</p>
@@ -154,7 +154,7 @@ function SessionCard({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="rounded-2xl border border-border bg-card overflow-hidden"
+      className="rounded-xl border border-border bg-card overflow-hidden"
     >
       <button
         onClick={onToggle}
@@ -201,7 +201,7 @@ function SessionCard({
                     {tasks.map((task) => (
                       <div
                         key={task.id}
-                        className={`flex items-center gap-3 p-2.5 rounded-xl transition-all ${
+                        className={`flex items-center gap-3 p-2.5 rounded-lg transition-all ${
                           task.completed ? "opacity-40" : "bg-muted/50"
                         }`}
                       >

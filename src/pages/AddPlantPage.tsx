@@ -48,7 +48,7 @@ const AddPlantPage = () => {
           placeholder="Search plants..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-xl text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
       </div>
 
@@ -85,7 +85,7 @@ const AddPlantPage = () => {
         <select
           value={selectedZone}
           onChange={(e) => setSelectedZone(e.target.value)}
-          className="w-full px-3 py-2 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
         >
           {zones.map((z) => (
             <option key={z} value={z}>{z}</option>
@@ -103,7 +103,7 @@ const AddPlantPage = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
-              className="bg-card rounded-2xl border border-border p-4"
+              className="bg-card rounded-xl border border-border p-4"
             >
               <div className="flex items-start gap-3">
                 <span className="text-3xl">{plant.image}</span>

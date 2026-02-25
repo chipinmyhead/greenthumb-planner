@@ -80,7 +80,7 @@ const CalendarPage = () => {
             <button
               key={dateStr}
               onClick={() => setSelectedDate(day)}
-              className={`aspect-square rounded-xl flex flex-col items-center justify-center gap-0.5 text-sm transition-all
+              className={`aspect-square rounded-lg flex flex-col items-center justify-center gap-0.5 text-sm transition-all
                 ${isSelected ? "bg-primary text-primary-foreground" : ""}
                 ${isToday && !isSelected ? "ring-1 ring-primary/40" : ""}
                 ${!isSelected ? "hover:bg-muted" : ""}
@@ -115,7 +115,7 @@ const CalendarPage = () => {
               {selectedTasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`flex items-center gap-3 p-3 rounded-xl border border-border bg-card ${task.completed ? "opacity-50" : ""}`}
+                  className={`flex items-center gap-3 p-3 rounded-lg border border-border bg-card ${task.completed ? "opacity-50" : ""}`}
                 >
                   <span className="text-xl">{TASK_ICONS[task.type]}</span>
                   <div>
@@ -126,7 +126,7 @@ const CalendarPage = () => {
               ))}
             </div>
           ) : (
-            <div className="bg-card rounded-2xl border border-border p-4 text-center">
+            <div className="bg-card rounded-xl border border-border p-4 text-center">
               <p className="text-sm text-muted-foreground">No tasks on this day</p>
             </div>
           )}
