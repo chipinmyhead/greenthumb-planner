@@ -21,76 +21,76 @@ const GardenPage = () => {
   const [selectedPlant, setSelectedPlant] = useState<GardenPlant | null>(null);
 
   return (
-    <div className="px-4 pt-12 pb-24 max-w-lg mx-auto">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+    <div className="px-5 pt-14 pb-28 max-w-lg mx-auto">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Garden</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-4xl text-foreground">My Garden</h1>
+          <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mt-2">
             {gardenPlants.length} plant{gardenPlants.length !== 1 ? "s" : ""} in your landscape
           </p>
         </div>
         <button
           onClick={() => navigate("/add")}
-          className="mt-1 p-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="mt-2 w-9 h-9 rounded-full border-2 border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4" />
         </button>
       </motion.div>
 
-      <div className="mt-6 space-y-3">
+      <div className="space-y-3">
         {gardenPlants.map((gp, i) => (
           <motion.div
             key={gp.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
-            className="bg-card rounded-xl border border-border p-4"
+            className="bg-card rounded-md border border-border p-4"
           >
             <div className="flex items-start gap-3">
               <span className="text-3xl">{gp.plant.image}</span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-foreground">{gp.plant.name}</h3>
-                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                  <h3 className="font-semibold text-foreground text-sm">{gp.plant.name}</h3>
+                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     {CATEGORY_ICONS[gp.plant.category]} {gp.plant.category}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground italic">{gp.plant.scientificName}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">📍 {gp.zone}</p>
+                <p className="text-[11px] text-muted-foreground italic">{gp.plant.scientificName}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">📍 {gp.zone}</p>
 
                 <div className="flex items-center gap-4 mt-3 flex-wrap">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Droplets className="w-3.5 h-3.5 text-water" />
+                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Droplets className="w-3 h-3 text-water" />
                     {waterLabels[gp.plant.waterNeeds]}
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Sun className="w-3.5 h-3.5 text-sun" />
+                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Sun className="w-3 h-3 text-sun" />
                     {sunLabels[gp.plant.sunlight]}
                   </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Wind className="w-3.5 h-3.5 text-sage" />
+                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Wind className="w-3 h-3 text-sage" />
                     {gp.plant.hardiness}
                   </div>
                 </div>
-                <div className="flex items-start gap-1 mt-2 text-xs text-muted-foreground">
-                  <FlaskConical className="w-3.5 h-3.5 text-leaf shrink-0 mt-0.5" />
+                <div className="flex items-start gap-1 mt-2 text-[11px] text-muted-foreground">
+                  <FlaskConical className="w-3 h-3 text-leaf shrink-0 mt-0.5" />
                   <span>{gp.plant.fertilizerType}</span>
                 </div>
 
-                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
                   {gp.plant.notes}
                 </p>
               </div>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setSelectedPlant(gp)}
-                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                  className="p-1.5 rounded-full hover:bg-muted transition-colors"
                 >
                   <Info className="w-4 h-4 text-muted-foreground" />
                 </button>
                 <button
                   onClick={() => removePlant(gp.id)}
-                  className="p-2 rounded-full hover:bg-destructive/10 transition-colors"
+                  className="p-1.5 rounded-full hover:bg-destructive/10 transition-colors"
                 >
                   <Trash2 className="w-4 h-4 text-destructive" />
                 </button>
@@ -100,16 +100,16 @@ const GardenPage = () => {
         ))}
 
         {gardenPlants.length === 0 && (
-          <div className="bg-card rounded-xl border border-border p-8 text-center">
+          <div className="border border-dashed border-border rounded-md p-10 text-center">
             <span className="text-4xl">🌱</span>
-            <p className="text-muted-foreground mt-2">Your garden is empty</p>
-            <p className="text-xs text-muted-foreground">Add plants from the + tab</p>
+            <p className="text-muted-foreground mt-3 italic">Your garden is empty</p>
+            <p className="text-xs text-muted-foreground mt-1">Tap + to browse plants</p>
           </div>
         )}
       </div>
 
       <Sheet open={!!selectedPlant} onOpenChange={(open) => !open && setSelectedPlant(null)}>
-        <SheetContent side="bottom" className="rounded-t-xl max-h-[80vh] overflow-y-auto">
+        <SheetContent side="bottom" className="rounded-t-lg max-h-[80vh] overflow-y-auto">
           {selectedPlant && (
             <>
               <SheetHeader>
@@ -123,14 +123,14 @@ const GardenPage = () => {
               </SheetHeader>
 
               <div className="mt-5 space-y-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     {CATEGORY_ICONS[selectedPlant.plant.category]} {selectedPlant.plant.category}
                   </span>
-                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     {selectedPlant.plant.hardiness}
                   </span>
-                  <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     📍 {selectedPlant.zone}
                   </span>
                 </div>
@@ -143,16 +143,16 @@ const GardenPage = () => {
                   <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
                 </div>
 
-                <div className="bg-secondary/50 rounded-lg p-3">
+                <div className="border border-border rounded-md p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <FlaskConical className="w-4 h-4 text-leaf" />
-                    <p className="text-xs font-medium text-foreground">Recommended Fertilizer</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground">Recommended Fertilizer</p>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.fertilizerType}</p>
                 </div>
 
-                <div className="bg-secondary/50 rounded-lg p-3">
-                  <p className="text-xs font-medium text-foreground mb-1">Care Notes</p>
+                <div className="border border-border rounded-md p-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground mb-1">Care Notes</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.notes}</p>
                 </div>
               </div>
@@ -165,10 +165,10 @@ const GardenPage = () => {
 };
 
 const DetailItem = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
-  <div className="bg-secondary/50 rounded-lg p-3 flex items-start gap-2">
+  <div className="border border-border rounded-md p-3 flex items-start gap-2">
     {icon}
     <div>
-      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{label}</p>
       <p className="text-sm font-medium text-foreground">{value}</p>
     </div>
   </div>

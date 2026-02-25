@@ -12,14 +12,14 @@ interface TaskCardProps {
   index: number;
 }
 
-const typeColorClasses: Record<MaintenanceTask["type"], string> = {
-  water: "bg-water/15 border-water/30",
-  fertilize: "bg-leaf/15 border-leaf/30",
-  prune: "bg-earth/15 border-earth/30",
-  inspect: "bg-sun/15 border-sun/30",
+const typeAccents: Record<MaintenanceTask["type"], string> = {
+  water: "border-l-water",
+  fertilize: "border-l-leaf",
+  prune: "border-l-earth",
+  inspect: "border-l-sun",
 };
 
-const checkColorClasses: Record<MaintenanceTask["type"], string> = {
+const checkAccents: Record<MaintenanceTask["type"], string> = {
   water: "bg-water text-water-foreground",
   fertilize: "bg-leaf text-leaf-foreground",
   prune: "bg-earth text-earth-foreground",
@@ -42,27 +42,27 @@ const TaskCard = ({ task, index }: TaskCardProps) => {
       transition={{ delay: index * 0.05 }}
       className="space-y-0"
     >
-      <div className={`flex items-center gap-3 p-3 rounded-lg border ${typeColorClasses[task.type]} ${showSuggestion ? "rounded-b-none" : ""}`}>
-        <span className="text-2xl">{TASK_ICONS[task.type]}</span>
+      <div className={`flex items-center gap-3 p-3 bg-card border border-border border-l-[3px] ${typeAccents[task.type]} ${showSuggestion ? "rounded-t-md rounded-b-none" : "rounded-md"}`}>
+        <span className="text-xl">{TASK_ICONS[task.type]}</span>
         <div className="flex-1 min-w-0">
           <p className="font-medium text-sm text-foreground truncate">{task.plantName}</p>
-          <p className="text-xs text-muted-foreground capitalize">{task.type}</p>
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">{task.type}</p>
         </div>
         <button
           onClick={() => completeTask(task.id)}
-          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 ${checkColorClasses[task.type]}`}
+          className={`w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-110 ${checkAccents[task.type]}`}
         >
-          <Check className="w-4 h-4" />
+          <Check className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {showSuggestion && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-water/10 border border-t-0 border-water/20 rounded-b-lg">
+        <div className="flex items-center gap-2 px-3 py-2 bg-water/8 border border-t-0 border-water/15 rounded-b-md">
           <CloudRain className="w-3.5 h-3.5 text-water shrink-0" />
           <p className="text-[11px] text-muted-foreground flex-1">{rainSuggestion!.reason}</p>
           <button
             onClick={() => setDismissed(true)}
-            className="text-[10px] text-muted-foreground hover:text-foreground shrink-0"
+            className="text-[10px] text-muted-foreground hover:text-foreground shrink-0 uppercase tracking-wider"
           >
             Dismiss
           </button>

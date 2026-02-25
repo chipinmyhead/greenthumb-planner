@@ -15,8 +15,8 @@ const BottomNav = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-lg border-t border-border">
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-border">
+      <div className="flex items-center justify-around h-14 max-w-lg mx-auto px-2">
         {tabs.map(({ to, icon: Icon, label }) => {
           const active = location.pathname === to;
           return (
@@ -28,15 +28,16 @@ const BottomNav = () => {
               {active && (
                 <motion.div
                   layoutId="nav-indicator"
-                  className="absolute -top-px left-2 right-2 h-0.5 bg-primary rounded-full"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="absolute -top-[1px] left-3 right-3 h-[2px] bg-primary rounded-full"
+                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
               )}
               <Icon
-                className={`w-5 h-5 transition-colors ${active ? "text-primary" : "text-muted-foreground"}`}
+                className={`w-[18px] h-[18px] transition-colors ${active ? "text-primary" : "text-muted-foreground"}`}
+                strokeWidth={active ? 2.5 : 1.5}
               />
               <span
-                className={`text-[10px] font-medium transition-colors ${active ? "text-primary" : "text-muted-foreground"}`}
+                className={`text-[9px] uppercase tracking-[0.08em] font-medium transition-colors ${active ? "text-primary" : "text-muted-foreground"}`}
               >
                 {label}
               </span>
@@ -44,7 +45,6 @@ const BottomNav = () => {
           );
         })}
       </div>
-      {/* Safe area padding for iOS */}
       <div className="h-[env(safe-area-inset-bottom)]" />
     </nav>
   );

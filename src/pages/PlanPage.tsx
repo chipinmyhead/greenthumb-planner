@@ -10,7 +10,7 @@ const CADENCE_OPTIONS: { value: MaintenanceCadence; label: string; desc: string 
   { value: "monthly", label: "Monthly", desc: "Tasks grouped by month" },
 ];
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 const PlanPage = () => {
   const { cadence, setCadence, maintenanceSessions, preferredDay, setPreferredDay, completeTask } = useGarden();
@@ -22,19 +22,19 @@ const PlanPage = () => {
   const totalTasks = maintenanceSessions.reduce((sum, s) => sum + s.tasks.length, 0);
 
   return (
-    <div className="px-4 pt-12 pb-24 max-w-lg mx-auto">
+    <div className="px-5 pt-14 pb-28 max-w-lg mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-foreground">Plan</h1>
+          <h1 className="text-4xl text-foreground">Plan</h1>
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors"
+            className="p-2 rounded-md border border-border hover:bg-muted transition-colors"
           >
             <Settings2 className="w-5 h-5 text-muted-foreground" />
           </button>
         </div>
-        <p className="text-muted-foreground text-sm mt-1">
-          {totalTasks} tasks across {maintenanceSessions.length} sessions
+        <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mt-2">
+          {totalTasks} tasks · {maintenanceSessions.length} sessions
         </p>
       </motion.div>
 
@@ -47,18 +47,18 @@ const PlanPage = () => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-4 rounded-xl bg-card border border-border space-y-4">
+            <div className="mt-5 p-4 rounded-md border border-border space-y-4">
               <div>
-                <p className="text-sm font-semibold text-foreground mb-2">Cadence</p>
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-2">Cadence</p>
                 <div className="grid grid-cols-3 gap-2">
                   {CADENCE_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       onClick={() => setCadence(opt.value)}
-                      className={`p-3 rounded-lg border text-center transition-all ${
+                      className={`p-3 rounded-md border text-center transition-all ${
                         cadence === opt.value
                           ? "bg-primary text-primary-foreground border-primary"
-                          : "bg-card border-border hover:bg-muted text-foreground"
+                          : "border-border hover:bg-muted text-foreground"
                       }`}
                     >
                       <p className="text-sm font-medium">{opt.label}</p>
@@ -72,13 +72,13 @@ const PlanPage = () => {
 
               {cadence !== "monthly" && (
                 <div>
-                  <p className="text-sm font-semibold text-foreground mb-2">Preferred Day</p>
+                  <p className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground mb-2">Preferred Day</p>
                   <div className="flex gap-1.5">
                     {DAY_NAMES.map((name, i) => (
                       <button
                         key={i}
                         onClick={() => setPreferredDay(i)}
-                        className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all ${
+                        className={`flex-1 py-2 rounded-md text-[10px] uppercase tracking-wider font-medium transition-all ${
                           preferredDay === i
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -96,15 +96,14 @@ const PlanPage = () => {
       </AnimatePresence>
 
       {/* Sessions */}
-      <div className="mt-6 space-y-3">
+      <div className="mt-8 space-y-3">
         {maintenanceSessions.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-card rounded-xl border border-border p-8 text-center"
+            className="border border-dashed border-border rounded-md p-10 text-center"
           >
-            <p className="text-4xl mb-2">🎉</p>
-            <p className="text-sm text-muted-foreground">All caught up! No upcoming tasks.</p>
+            <p className="text-sm text-muted-foreground italic">All caught up — no upcoming tasks.</p>
           </motion.div>
         ) : (
           maintenanceSessions.map((session, i) => (
@@ -142,7 +141,6 @@ function SessionCard({
   const totalCount = session.tasks.length;
   const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
-  // Group tasks by type for smart display
   const tasksByType = session.tasks.reduce<Record<string, typeof session.tasks>>((acc, t) => {
     if (!acc[t.type]) acc[t.type] = [];
     acc[t.type].push(t);
@@ -154,7 +152,7 @@ function SessionCard({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="rounded-xl border border-border bg-card overflow-hidden"
+      className="rounded-md border border-border bg-card overflow-hidden"
     >
       <button
         onClick={onToggle}
@@ -162,11 +160,10 @@ function SessionCard({
       >
         <div className="flex-1">
           <p className="text-sm font-semibold text-foreground">{session.label}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
             {totalCount} task{totalCount !== 1 ? "s" : ""} · {completedCount} done
           </p>
-          {/* Progress bar */}
-          <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+          <div className="mt-2 h-1 rounded-full bg-muted overflow-hidden">
             <motion.div
               className="h-full rounded-full bg-primary"
               initial={{ width: 0 }}
@@ -193,7 +190,7 @@ function SessionCard({
             <div className="px-4 pb-4 space-y-3">
               {Object.entries(tasksByType).map(([type, tasks]) => (
                 <div key={type}>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
+                  <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-[0.15em] mb-1.5 flex items-center gap-1.5">
                     <span>{TASK_ICONS[type as keyof typeof TASK_ICONS]}</span>
                     {type} ({tasks.length})
                   </p>
@@ -201,7 +198,7 @@ function SessionCard({
                     {tasks.map((task) => (
                       <div
                         key={task.id}
-                        className={`flex items-center gap-3 p-2.5 rounded-lg transition-all ${
+                        className={`flex items-center gap-3 p-2.5 rounded-md transition-all ${
                           task.completed ? "opacity-40" : "bg-muted/50"
                         }`}
                       >
