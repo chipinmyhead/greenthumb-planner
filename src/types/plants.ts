@@ -66,5 +66,6 @@ export interface MaintenanceSession {
   id: string;
   label: string;
   dateRange: { start: string; end: string };
+  plannedDate?: string;
   tasks: MaintenanceTask[];
 }

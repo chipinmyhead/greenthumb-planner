@@ -149,7 +149,11 @@ function buildSessions(
 
     filteredWeeks.forEach((weekStart, i) => {
       const wStart = startOfWeek(weekStart, { weekStartsOn: 0 });
-      const wEnd = endOfWeek(weekStart, { weekStartsOn: 0 });
+      const wEnd = endOfWeek(addWeeks(wStart, weekInterval - 1), { weekStartsOn: 0 });
+      const preferredDate = addDays(wStart, preferredDay);
+      const plannedDate = isBefore(preferredDate, today)
+        ? addWeeks(preferredDate, 1)
+        : preferredDate;
       const sessionTasks = incompleteTasks.filter((t) => {
         const d = parseISO(t.dueDate);
         return isWithinInterval(d, { start: wStart, end: wEnd }) || (isBefore(d, wStart) && i === 0);
@@ -157,7 +161,10 @@ function buildSessions(
       if (sessionTasks.length > 0) {
         sessions.push({
           id: `session-${format(wStart, "yyyy-MM-dd")}`,
-          label: `Week of ${format(wStart, "MMM d")}`,
+          label: cadence === "biweekly"
+            ? `${format(wStart, "MMM d")} – ${format(wEnd, "MMM d")}`
+            : `Week of ${format(wStart, "MMM d")}`,
+          plannedDate: isBefore(wEnd, plannedDate) ? undefined : format(plannedDate, "yyyy-MM-dd"),
           dateRange: { start: format(wStart, "yyyy-MM-dd"), end: format(wEnd, "yyyy-MM-dd") },
           tasks: sessionTasks,
         });

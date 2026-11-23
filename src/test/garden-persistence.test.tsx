@@ -50,3 +50,26 @@ it("restores garden and schedule changes across reloads and keeps care recurring
   later.unmount();
   expect(renderHook(useGarden, { wrapper }).result.current.gardenPlants).toEqual([]);
 });
+
+it("groups both weeks of a biweekly plan and shows the preferred session date", () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(2026, 5, 15, 12));
+
+  const { result } = renderHook(useGarden, { wrapper: GardenProvider });
+  act(() => {
+    result.current.addPlant("p1", "Front yard");
+    result.current.setCadence("biweekly");
+    result.current.setPreferredDay(2);
+  });
+
+  const firstSession = result.current.maintenanceSessions[0];
+  expect(firstSession.dateRange).toEqual({ start: "2026-06-14", end: "2026-06-27" });
+  expect(firstSession.plannedDate).toBe("2026-06-16");
+  expect(firstSession.tasks).toContainEqual(expect.objectContaining({
+    type: "water",
+    dueDate: "2026-06-22",
+  }));
+
+  act(() => result.current.setPreferredDay(0));
+  expect(result.current.maintenanceSessions[0].plannedDate).toBe("2026-06-21");
+});

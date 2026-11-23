@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { format, parseISO } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
 import { MaintenanceCadence, MaintenanceSession, TASK_ICONS } from "@/types/plants";
@@ -10,7 +11,7 @@ const CADENCE_OPTIONS: { value: MaintenanceCadence; label: string; desc: string 
   { value: "monthly", label: "Monthly", desc: "Tasks grouped by month" },
 ];
 
-const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 const PlanPage = () => {
   const { cadence, setCadence, maintenanceSessions, preferredDay, setPreferredDay, completeTask } = useGarden();
@@ -27,6 +28,8 @@ const PlanPage = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-4xl text-foreground">Plan</h1>
           <button
+            aria-label="Schedule settings"
+            aria-expanded={showSettings}
             onClick={() => setShowSettings(!showSettings)}
             className="p-2 rounded-md border border-border hover:bg-muted transition-colors"
           >
@@ -77,6 +80,8 @@ const PlanPage = () => {
                     {DAY_NAMES.map((name, i) => (
                       <button
                         key={i}
+                        aria-label={name}
+                        aria-pressed={preferredDay === i}
                         onClick={() => setPreferredDay(i)}
                         className={`flex-1 py-2 rounded-md text-[10px] uppercase tracking-wider font-medium transition-all ${
                           preferredDay === i
@@ -84,7 +89,7 @@ const PlanPage = () => {
                             : "bg-muted text-muted-foreground hover:bg-muted/80"
                         }`}
                       >
-                        {name}
+                        {name.slice(0, 2)}
                       </button>
                     ))}
                   </div>
@@ -160,6 +165,11 @@ function SessionCard({
       >
         <div className="flex-1">
           <p className="text-sm font-semibold text-foreground">{session.label}</p>
+          {session.plannedDate && (
+            <p className="text-xs text-muted-foreground">
+              Preferred session · {format(parseISO(session.plannedDate), "EEE, MMM d")}
+            </p>
+          )}
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">
             {totalCount} task{totalCount !== 1 ? "s" : ""} · {completedCount} done
           </p>
