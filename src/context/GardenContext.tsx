@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { GardenPlant, MaintenanceTask, MaintenanceCadence, MaintenanceSession } from "@/types/plants";
+import { z } from "zod";
 import { PLANT_DATABASE } from "@/data/plantDatabase";
-import { addDays, addWeeks, addMonths, format, isBefore, startOfDay, startOfWeek, endOfWeek, eachWeekOfInterval, eachMonthOfInterval, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
+import { addDays, addWeeks, addMonths, format, isBefore, startOfDay, startOfWeek, endOfWeek, eachWeekOfInterval, eachMonthOfInterval, startOfMonth, endOfMonth, isWithinInterval, parseISO } from "date-fns";
 
 interface GardenContextType {
   gardenPlants: GardenPlant[];
@@ -29,13 +30,13 @@ export const useGarden = () => {
 
 function generateTasks(gardenPlants: GardenPlant[]): MaintenanceTask[] {
   const tasks: MaintenanceTask[] = [];
-  const today = startOfDay(new Date());
+  const today = format(new Date(), "yyyy-MM-dd");
 
   gardenPlants.forEach((gp) => {
-    const baseDate = new Date(gp.addedDate);
+    const baseDate = parseISO(gp.addedDate);
 
     // Water tasks
-    const lastWatered = gp.lastWatered ? new Date(gp.lastWatered) : baseDate;
+    const lastWatered = gp.lastWatered ? parseISO(gp.lastWatered) : baseDate;
     const nextWater = addDays(lastWatered, gp.plant.waterFrequencyDays);
     tasks.push({
       id: `${gp.id}-water`,
@@ -43,11 +44,11 @@ function generateTasks(gardenPlants: GardenPlant[]): MaintenanceTask[] {
       plantName: gp.plant.name,
       type: "water",
       dueDate: format(nextWater, "yyyy-MM-dd"),
-      completed: false,
+      completed: gp.lastWatered === today,
     });
 
     // Fertilize tasks
-    const lastFert = gp.lastFertilized ? new Date(gp.lastFertilized) : baseDate;
+    const lastFert = gp.lastFertilized ? parseISO(gp.lastFertilized) : baseDate;
     const nextFert = addDays(lastFert, gp.plant.fertilizerFrequencyDays);
     tasks.push({
       id: `${gp.id}-fertilize`,
@@ -55,11 +56,11 @@ function generateTasks(gardenPlants: GardenPlant[]): MaintenanceTask[] {
       plantName: gp.plant.name,
       type: "fertilize",
       dueDate: format(nextFert, "yyyy-MM-dd"),
-      completed: false,
+      completed: gp.lastFertilized === today,
     });
 
     // Prune tasks
-    const lastPruned = gp.lastPruned ? new Date(gp.lastPruned) : baseDate;
+    const lastPruned = gp.lastPruned ? parseISO(gp.lastPruned) : baseDate;
     const nextPrune = addDays(lastPruned, gp.plant.pruneFrequencyDays);
     tasks.push({
       id: `${gp.id}-prune`,
@@ -67,42 +68,47 @@ function generateTasks(gardenPlants: GardenPlant[]): MaintenanceTask[] {
       plantName: gp.plant.name,
       type: "prune",
       dueDate: format(nextPrune, "yyyy-MM-dd"),
-      completed: false,
+      completed: gp.lastPruned === today,
     });
   });
 
   return tasks;
 }
 
-// Pre-populate with a few plants
-function getInitialGardenPlants(): GardenPlant[] {
-  const today = format(new Date(), "yyyy-MM-dd");
-  const threeDaysAgo = format(addDays(new Date(), -3), "yyyy-MM-dd");
-  const weekAgo = format(addDays(new Date(), -7), "yyyy-MM-dd");
+const storageKey = "greenthumb.garden.v1";
+const savedGardenSchema = z.object({
+  plants: z.array(z.object({
+    id: z.string(),
+    plantId: z.string(),
+    zone: z.string(),
+    addedDate: z.string().date(),
+    lastWatered: z.string().date().optional(),
+    lastFertilized: z.string().date().optional(),
+    lastPruned: z.string().date().optional(),
+  })),
+  cadence: z.enum(["weekly", "biweekly", "monthly"]),
+  preferredDay: z.number().int().min(0).max(6),
+});
 
-  return [
-    {
-      id: "gp1",
-      plant: PLANT_DATABASE[0], // Boxwood
-      addedDate: weekAgo,
-      zone: "Front Yard",
-      lastWatered: threeDaysAgo,
-    },
-    {
-      id: "gp2",
-      plant: PLANT_DATABASE[4], // Rose Bush
-      addedDate: weekAgo,
-      zone: "Back Garden",
-      lastWatered: threeDaysAgo,
-    },
-    {
-      id: "gp3",
-      plant: PLANT_DATABASE[2], // Hydrangea
-      addedDate: weekAgo,
-      zone: "Side Yard",
-      lastWatered: today,
-    },
-  ];
+function loadGarden(): {
+  gardenPlants: GardenPlant[];
+  cadence: MaintenanceCadence;
+  preferredDay: number;
+} {
+  try {
+    const saved = window.localStorage.getItem(storageKey);
+    if (saved) {
+      const { plants, cadence, preferredDay } = savedGardenSchema.parse(JSON.parse(saved));
+      const gardenPlants = plants.flatMap(({ plantId, id, zone, addedDate, ...care }) => {
+        const plant = PLANT_DATABASE.find((item) => item.id === plantId);
+        return plant ? [{ id, zone, addedDate, plant, ...care }] : [];
+      });
+      return { gardenPlants, cadence, preferredDay };
+    }
+  } catch {
+    // The garden can still be used when browser storage is unavailable.
+  }
+  return { gardenPlants: [], cadence: "weekly", preferredDay: 6 };
 }
 
 function buildSessions(
@@ -124,7 +130,7 @@ function buildSessions(
       const mStart = startOfMonth(monthStart);
       const mEnd = endOfMonth(monthStart);
       const sessionTasks = incompleteTasks.filter((t) => {
-        const d = new Date(t.dueDate);
+        const d = parseISO(t.dueDate);
         return isWithinInterval(d, { start: mStart, end: mEnd }) || (isBefore(d, mStart) && i === 0);
       });
       if (sessionTasks.length > 0) {
@@ -145,7 +151,7 @@ function buildSessions(
       const wStart = startOfWeek(weekStart, { weekStartsOn: 0 });
       const wEnd = endOfWeek(weekStart, { weekStartsOn: 0 });
       const sessionTasks = incompleteTasks.filter((t) => {
-        const d = new Date(t.dueDate);
+        const d = parseISO(t.dueDate);
         return isWithinInterval(d, { start: wStart, end: wEnd }) || (isBefore(d, wStart) && i === 0);
       });
       if (sessionTasks.length > 0) {
@@ -163,25 +169,32 @@ function buildSessions(
 }
 
 export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [gardenPlants, setGardenPlants] = useState<GardenPlant[]>(getInitialGardenPlants);
-  const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
-  const [cadence, setCadence] = useState<MaintenanceCadence>("weekly");
-  const [preferredDay, setPreferredDay] = useState<number>(6); // Saturday
+  const [initialGarden] = useState(loadGarden);
+  const [gardenPlants, setGardenPlants] = useState(initialGarden.gardenPlants);
+  const [cadence, setCadence] = useState(initialGarden.cadence);
+  const [preferredDay, setPreferredDay] = useState(initialGarden.preferredDay);
 
-  const allTasks = generateTasks(gardenPlants).map((t) => ({
-    ...t,
-    completed: completedTaskIds.has(t.id),
-  }));
+  const [storageError, setStorageError] = useState(false);
+  useEffect(() => {
+    try {
+      const plants = gardenPlants.map(({ plant, ...entry }) => ({ ...entry, plantId: plant.id }));
+      window.localStorage.setItem(storageKey, JSON.stringify({ plants, cadence, preferredDay }));
+      setStorageError(false);
+    } catch {
+      setStorageError(true);
+    }
+  }, [gardenPlants, cadence, preferredDay]);
 
+  const allTasks = generateTasks(gardenPlants);
   const today = startOfDay(new Date());
   const todayStr = format(today, "yyyy-MM-dd");
 
   const todayTasks = allTasks.filter((t) => t.dueDate === todayStr && !t.completed);
   const overdueTasks = allTasks.filter(
-    (t) => isBefore(new Date(t.dueDate), today) && t.dueDate !== todayStr && !t.completed
+    (t) => isBefore(parseISO(t.dueDate), today) && t.dueDate !== todayStr && !t.completed
   );
   const upcomingTasks = allTasks.filter(
-    (t) => !isBefore(new Date(t.dueDate), today) && t.dueDate !== todayStr && !t.completed
+    (t) => !isBefore(parseISO(t.dueDate), today) && t.dueDate !== todayStr && !t.completed
   );
 
   const maintenanceSessions = useMemo(
@@ -206,15 +219,12 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
 
   const completeTask = useCallback((taskId: string) => {
-    setCompletedTaskIds((prev) => new Set(prev).add(taskId));
+    const completedDate = format(new Date(), "yyyy-MM-dd");
     setGardenPlants((prev) =>
       prev.map((gp) => {
-        if (taskId.startsWith(gp.id)) {
-          const todayStr = format(new Date(), "yyyy-MM-dd");
-          if (taskId.endsWith("-water")) return { ...gp, lastWatered: todayStr };
-          if (taskId.endsWith("-fertilize")) return { ...gp, lastFertilized: todayStr };
-          if (taskId.endsWith("-prune")) return { ...gp, lastPruned: todayStr };
-        }
+        if (taskId === `${gp.id}-water`) return { ...gp, lastWatered: completedDate };
+        if (taskId === `${gp.id}-fertilize`) return { ...gp, lastFertilized: completedDate };
+        if (taskId === `${gp.id}-prune`) return { ...gp, lastPruned: completedDate };
         return gp;
       })
     );
@@ -238,6 +248,11 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setPreferredDay,
       }}
     >
+      {storageError && (
+        <p role="alert" className="p-3 text-center text-sm text-destructive">
+          This browser could not save your garden. Changes may be lost when you leave or refresh.
+        </p>
+      )}
       {children}
     </GardenContext.Provider>
   );

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
 import TaskCard from "@/components/TaskCard";
@@ -25,6 +26,18 @@ const Dashboard = () => {
           Your Garden
         </h1>
       </motion.div>
+
+      {gardenPlants.length === 0 && (
+        <div className="mb-8 rounded-lg border border-border bg-card p-5">
+          <h2 className="text-xl">Add your first plant</h2>
+          <p className="my-2 text-sm text-muted-foreground">
+            Your garden is saved in this browser.
+          </p>
+          <Link to="/add" className="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+            Browse plants
+          </Link>
+        </div>
+      )}
 
       {/* Stats row */}
       <motion.div
