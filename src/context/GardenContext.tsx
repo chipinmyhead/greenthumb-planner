@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
 import { GardenPlant, MaintenanceTask, MaintenanceCadence, MaintenanceSession } from "@/types/plants";
 import { z } from "zod";
-import { PLANT_DATABASE } from "@/data/plantDatabase";
+import { PLANT_BY_ID } from "@/data/plantDatabase";
 import { addDays, addWeeks, addMonths, format, isBefore, startOfDay, startOfWeek, endOfWeek, eachWeekOfInterval, eachMonthOfInterval, startOfMonth, endOfMonth, isWithinInterval, parseISO } from "date-fns";
 
 interface GardenContextType {
@@ -35,41 +35,23 @@ function generateTasks(gardenPlants: GardenPlant[]): MaintenanceTask[] {
   gardenPlants.forEach((gp) => {
     const baseDate = parseISO(gp.addedDate);
 
-    // Water tasks
-    const lastWatered = gp.lastWatered ? parseISO(gp.lastWatered) : baseDate;
-    const nextWater = addDays(lastWatered, gp.plant.waterFrequencyDays);
-    tasks.push({
-      id: `${gp.id}-water`,
-      gardenPlantId: gp.id,
-      plantName: gp.plant.name,
-      type: "water",
-      dueDate: format(nextWater, "yyyy-MM-dd"),
-      completed: gp.lastWatered === today,
-    });
-
-    // Fertilize tasks
-    const lastFert = gp.lastFertilized ? parseISO(gp.lastFertilized) : baseDate;
-    const nextFert = addDays(lastFert, gp.plant.fertilizerFrequencyDays);
-    tasks.push({
-      id: `${gp.id}-fertilize`,
-      gardenPlantId: gp.id,
-      plantName: gp.plant.name,
-      type: "fertilize",
-      dueDate: format(nextFert, "yyyy-MM-dd"),
-      completed: gp.lastFertilized === today,
-    });
-
-    // Prune tasks
-    const lastPruned = gp.lastPruned ? parseISO(gp.lastPruned) : baseDate;
-    const nextPrune = addDays(lastPruned, gp.plant.pruneFrequencyDays);
-    tasks.push({
-      id: `${gp.id}-prune`,
-      gardenPlantId: gp.id,
-      plantName: gp.plant.name,
-      type: "prune",
-      dueDate: format(nextPrune, "yyyy-MM-dd"),
-      completed: gp.lastPruned === today,
-    });
+    const care = [
+      { type: "water", interval: gp.plant.waterFrequencyDays, lastDone: gp.lastWatered },
+      { type: "fertilize", interval: gp.plant.fertilizerFrequencyDays, lastDone: gp.lastFertilized },
+      { type: "prune", interval: gp.plant.pruneFrequencyDays, lastDone: gp.lastPruned },
+    ] as const;
+    for (const { type, interval, lastDone } of care) {
+      if (!interval) continue;
+      const lastCare = lastDone ? parseISO(lastDone) : baseDate;
+      tasks.push({
+        id: `${gp.id}-${type}`,
+        gardenPlantId: gp.id,
+        plantName: gp.plant.name,
+        type,
+        dueDate: format(addDays(lastCare, interval), "yyyy-MM-dd"),
+        completed: lastDone === today,
+      });
+    }
   });
 
   return tasks;
@@ -80,6 +62,7 @@ const savedGardenSchema = z.object({
   plants: z.array(z.object({
     id: z.string(),
     plantId: z.string(),
+    catalogIdentity: z.object({ name: z.string(), scientificName: z.string() }).optional(),
     zone: z.string(),
     addedDate: z.string().date(),
     lastWatered: z.string().date().optional(),
@@ -99,8 +82,13 @@ function loadGarden(): {
     const saved = window.localStorage.getItem(storageKey);
     if (saved) {
       const { plants, cadence, preferredDay } = savedGardenSchema.parse(JSON.parse(saved));
-      const gardenPlants = plants.flatMap(({ plantId, id, zone, addedDate, ...care }) => {
-        const plant = PLANT_DATABASE.find((item) => item.id === plantId);
+      const gardenPlants = plants.flatMap(({ plantId, catalogIdentity, id, zone, addedDate, ...care }) => {
+        const plant = PLANT_BY_ID.get(plantId) ?? (catalogIdentity && {
+          id: plantId,
+          name: catalogIdentity.name,
+          scientificName: catalogIdentity.scientificName,
+          image: "🌱",
+        });
         return plant ? [{ id, zone, addedDate, plant, ...care }] : [];
       });
       return { gardenPlants, cadence, preferredDay };
@@ -184,7 +172,13 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [storageError, setStorageError] = useState(false);
   useEffect(() => {
     try {
-      const plants = gardenPlants.map(({ plant, ...entry }) => ({ ...entry, plantId: plant.id }));
+      const plants = gardenPlants.map(({ plant, ...entry }) => ({
+        ...entry,
+        plantId: plant.id,
+        catalogIdentity: plant.id.startsWith("inat-")
+          ? { name: plant.name, scientificName: plant.scientificName }
+          : undefined,
+      }));
       window.localStorage.setItem(storageKey, JSON.stringify({ plants, cadence, preferredDay }));
       setStorageError(false);
     } catch {
@@ -210,7 +204,7 @@ export const GardenProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   );
 
   const addPlant = useCallback((plantId: string, zone: string) => {
-    const plant = PLANT_DATABASE.find((p) => p.id === plantId);
+    const plant = PLANT_BY_ID.get(plantId);
     if (!plant) return;
     const newGP: GardenPlant = {
       id: `gp-${Date.now()}`,

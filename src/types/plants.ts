@@ -2,16 +2,18 @@ export interface Plant {
   id: string;
   name: string;
   scientificName: string;
-  category: PlantCategory;
+  category?: PlantCategory;
   image: string;
-  waterFrequencyDays: number;
-  fertilizerFrequencyDays: number;
-  pruneFrequencyDays: number;
-  sunlight: "full" | "partial" | "shade";
-  waterNeeds: "low" | "medium" | "high";
-  hardiness: string;
-  fertilizerType: string;
-  notes: string;
+  waterFrequencyDays?: number;
+  fertilizerFrequencyDays?: number;
+  pruneFrequencyDays?: number;
+  sunlight?: "full" | "partial" | "shade";
+  waterNeeds?: "low" | "medium" | "high";
+  hardiness?: string;
+  fertilizerType?: string;
+  notes?: string;
+  observationCount?: number;
+  verifiedCare?: { guidance: string; sources: readonly string[] };
 }
 
 export type PlantCategory = "shrub" | "tree" | "flower" | "grass" | "succulent" | "herb" | "vine";

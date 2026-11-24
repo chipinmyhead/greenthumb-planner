@@ -51,35 +51,24 @@ const GardenPage = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="font-semibold text-foreground text-sm">{gp.plant.name}</h3>
-                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                  {gp.plant.category && <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     {CATEGORY_ICONS[gp.plant.category]} {gp.plant.category}
-                  </span>
+                  </span>}
                 </div>
                 <p className="text-[11px] text-muted-foreground italic">{gp.plant.scientificName}</p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">📍 {gp.zone}</p>
 
-                <div className="flex items-center gap-4 mt-3 flex-wrap">
-                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <Droplets className="w-3 h-3 text-water" />
-                    {waterLabels[gp.plant.waterNeeds]}
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <Sun className="w-3 h-3 text-sun" />
-                    {sunLabels[gp.plant.sunlight]}
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <Wind className="w-3 h-3 text-sage" />
-                    {gp.plant.hardiness}
-                  </div>
-                </div>
-                <div className="flex items-start gap-1 mt-2 text-[11px] text-muted-foreground">
-                  <FlaskConical className="w-3 h-3 text-leaf shrink-0 mt-0.5" />
-                  <span>{gp.plant.fertilizerType}</span>
-                </div>
-
-                <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
-                  {gp.plant.notes}
-                </p>
+                {gp.plant.verifiedCare && (
+                  <p className="mt-2 text-xs text-muted-foreground">{gp.plant.verifiedCare.guidance}</p>
+                )}
+                {!gp.plant.notes && !gp.plant.verifiedCare && (
+                  <p className="mt-2 text-xs text-muted-foreground">Care guidance has not been verified for this species.</p>
+                )}
+                {gp.plant.notes && (
+                  <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">
+                    Original care notes (unverified): {gp.plant.notes}
+                  </p>
+                )}
               </div>
               <div className="flex items-center gap-1">
                 <button
@@ -124,37 +113,62 @@ const GardenPage = () => {
 
               <div className="mt-5 space-y-4">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                  {selectedPlant.plant.category && <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     {CATEGORY_ICONS[selectedPlant.plant.category]} {selectedPlant.plant.category}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
-                    {selectedPlant.plant.hardiness}
-                  </span>
+                  </span>}
+                  {selectedPlant.plant.hardiness && (
+                    <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
+                      {selectedPlant.plant.hardiness}
+                    </span>
+                  )}
                   <span className="text-[10px] uppercase tracking-wider bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">
                     📍 {selectedPlant.zone}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <DetailItem icon={<Sun className="w-4 h-4 text-sun" />} label="Sunlight" value={sunLabels[selectedPlant.plant.sunlight]} />
-                  <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Needs" value={waterLabels[selectedPlant.plant.waterNeeds]} />
-                  <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Every" value={`${selectedPlant.plant.waterFrequencyDays} days`} />
-                  <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Fertilize Every" value={`${selectedPlant.plant.fertilizerFrequencyDays} days`} />
-                  <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
-                </div>
+                {selectedPlant.plant.verifiedCare && (
+                  <section className="space-y-2">
+                    <h3 className="font-semibold">Verified care guidance</h3>
+                    <p className="text-sm text-muted-foreground">{selectedPlant.plant.verifiedCare.guidance}</p>
+                    <ul className="space-y-1 text-sm">
+                      {selectedPlant.plant.verifiedCare.sources.map((source) => (
+                        <li key={source}>
+                          <a href={source} target="_blank" rel="noreferrer" className="text-primary underline">
+                            {new URL(source).hostname}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+                {!selectedPlant.plant.notes && !selectedPlant.plant.verifiedCare && (
+                  <p className="text-sm text-muted-foreground">Care guidance has not been verified for this species.</p>
+                )}
+                {selectedPlant.plant.notes && (
+                  <div className="space-y-3">
+                    <h3 className="font-semibold">Original care settings (unverified)</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <DetailItem icon={<Sun className="w-4 h-4 text-sun" />} label="Sunlight" value={selectedPlant.plant.sunlight ? sunLabels[selectedPlant.plant.sunlight] : "Unknown"} />
+                      <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Needs" value={selectedPlant.plant.waterNeeds ? waterLabels[selectedPlant.plant.waterNeeds] : "Unknown"} />
+                      <DetailItem icon={<Droplets className="w-4 h-4 text-water" />} label="Water Every" value={`${selectedPlant.plant.waterFrequencyDays} days`} />
+                      <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Fertilize Every" value={`${selectedPlant.plant.fertilizerFrequencyDays} days`} />
+                      <DetailItem icon={<Wind className="w-4 h-4 text-sage" />} label="Prune Every" value={`${selectedPlant.plant.pruneFrequencyDays} days`} />
+                    </div>
 
-                <div className="border border-border rounded-md p-3">
-                  <div className="flex items-center gap-2 mb-1">
-                    <FlaskConical className="w-4 h-4 text-leaf" />
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground">Recommended Fertilizer</p>
+                    <div className="border border-border rounded-md p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <FlaskConical className="w-4 h-4 text-leaf" />
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground">Recommended Fertilizer</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.fertilizerType}</p>
+                    </div>
+
+                    <div className="border border-border rounded-md p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground mb-1">Care Notes</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.notes}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.fertilizerType}</p>
-                </div>
-
-                <div className="border border-border rounded-md p-3">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground mb-1">Care Notes</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedPlant.plant.notes}</p>
-                </div>
+                )}
               </div>
             </>
           )}

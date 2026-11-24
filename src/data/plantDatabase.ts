@@ -1,6 +1,9 @@
 import { Plant } from "@/types/plants";
 
-export const PLANT_DATABASE: Plant[] = [
+import usSpecies from "./usVascularPlants.json";
+import { VERIFIED_PLANT_CARE } from "./verifiedPlantCare";
+
+const existingPlants: Plant[] = [
   {
     id: "p1",
     name: "Boxwood",
@@ -752,3 +755,28 @@ export const PLANT_DATABASE: Plant[] = [
     notes: "Very vigorous — prune hard in late winter. Attracts hummingbirds.",
   },
 ];
+
+const existingByName = new Map(existingPlants.map((plant) => [plant.scientificName.toLowerCase(), plant]));
+const matchedIds = new Set<string>();
+
+export const US_SPECIES_COUNT = usSpecies.length;
+export const PLANT_DATABASE: Plant[] = usSpecies.map(([taxonId, scientificName, commonName, count]) => {
+  const name = String(scientificName);
+  const existing = existingByName.get(name.toLowerCase());
+  if (existing) matchedIds.add(existing.id);
+  return {
+    id: `inat-${taxonId}`,
+    name: String(commonName) || name,
+    scientificName: name,
+    image: "🌱",
+    ...existing,
+    observationCount: Number(count),
+    verifiedCare: VERIFIED_PLANT_CARE[name],
+  };
+});
+PLANT_DATABASE.push(...existingPlants.filter((plant) => !matchedIds.has(plant.id)).map((plant) => ({
+  ...plant,
+  verifiedCare: VERIFIED_PLANT_CARE[plant.scientificName],
+})));
+
+export const PLANT_BY_ID = new Map(PLANT_DATABASE.map((plant) => [plant.id, plant]));

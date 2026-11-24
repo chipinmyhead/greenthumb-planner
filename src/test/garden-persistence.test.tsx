@@ -73,3 +73,15 @@ it("groups both weeks of a biweekly plan and shows the preferred session date", 
   act(() => result.current.setPreferredDay(0));
   expect(result.current.maintenanceSessions[0].plannedDate).toBe("2026-06-21");
 });
+
+it("saves an imported species without generating unverified reminders", () => {
+  const garden = renderHook(useGarden, { wrapper: GardenProvider });
+  act(() => garden.result.current.addPlant("inat-47911", "Front yard"));
+  expect(garden.result.current.gardenPlants[0].plant.scientificName).toBe("Asclepias syriaca");
+  expect(garden.result.current.gardenPlants[0].plant.verifiedCare?.sources).toHaveLength(2);
+  expect(garden.result.current.tasks).toEqual([]);
+  garden.unmount();
+
+  const reloaded = renderHook(useGarden, { wrapper: GardenProvider });
+  expect(reloaded.result.current.gardenPlants[0].plant.id).toBe("inat-47911");
+});

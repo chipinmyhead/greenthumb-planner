@@ -71,3 +71,20 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## U.S. vascular plant catalog
+
+The embedded catalog snapshot contains 10,000 distinct species, ranked by the
+number of research-grade, non-captive observations in iNaturalist's United
+States place under Tracheophyta. This is a measure of reporting frequency.
+Species with equal counts are ordered by iNaturalist taxon ID. The snapshot was
+retrieved on 2026-11-24. Run `python3 scripts/import-us-plants.py` to refresh it.
+The [iNaturalist API](https://www.inaturalist.org/pages/api+reference) supplies
+taxon IDs, names, and observation counts.
+
+`src/data/verifiedPlantCare.ts` contains care guidance written from the
+intersection of at least two independently published sources for each species.
+Each entry links to its supporting sources. The original garden profiles and
+reminder settings are retained for existing gardens and identified separately
+from verified guidance. Species with no reminder intervals can be added to a
+garden and do not generate automatic reminders.
