@@ -84,11 +84,14 @@ taxon IDs, names, and observation counts.
 
 `src/data/verifiedPlantCare.ts` is the horticultural lookup, keyed by species
 name. Its fields cover USDA hardiness zone, light, soil moisture, watering
-frequency, pruning season, pruning instructions, and transplant season. Each
+frequency, pruning season, pruning instructions, transplant season, mature
+height and spread, soil texture and pH, bloom season, and toxicity to people
+and pets. Each
 populated field links to two sources, such as university Extension gardening
 guides, botanical garden profiles, and the NC Extension Gardener Handbook.
 General watering recommendations describe when to check and water based on
-establishment and soil conditions. Missing fields are shown as awaiting review.
+establishment and soil conditions. Missing fields are shown as awaiting review. Missing toxicity data is labeled
+as unknown.
 The original garden profiles and reminder settings remain available to existing
 gardens as unverified settings. The lookup is a care reference and does not set
 automatic reminder intervals.

@@ -11,6 +11,12 @@ export interface PlantCare {
   pruningSeason?: CareRecommendation;
   pruningInstructions?: CareRecommendation;
   transplantSeason?: CareRecommendation;
+  matureSize?: CareRecommendation;
+  soilTexture?: CareRecommendation;
+  soilPh?: CareRecommendation;
+  bloomSeason?: CareRecommendation;
+  humanToxicity?: CareRecommendation;
+  petToxicity?: CareRecommendation;
 }
 
 export interface Plant {

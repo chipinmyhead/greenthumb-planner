@@ -44,7 +44,24 @@ it("shows horticultural recommendations and sources in the catalog", () => {
     target: { value: "Asclepias syriaca" },
   });
 
-  expect(screen.getByText("When to transplant")).toBeInTheDocument();
-  expect(screen.getByText("Full sun.", { exact: true })).toBeInTheDocument();
-  expect(screen.getAllByText("No cross-checked recommendation yet.").length).toBeGreaterThan(0);
+  const guide = screen.getByText("Verified care guide").closest("details");
+  expect(guide).not.toBeNull();
+  const care = within(guide!);
+  expect(care.getByText("When to transplant")).toBeInTheDocument();
+  expect(care.getByText("Full sun.", { exact: true })).toBeInTheDocument();
+  for (const field of [
+    "Mature height and spread", "Soil texture", "Soil pH", "Bloom season",
+    "Toxicity to people", "Toxicity to pets",
+  ]) {
+    expect(care.getByText(field)).toBeInTheDocument();
+  }
+  const petToxicity = care.getByText("Toxicity to pets").parentElement!;
+  expect(within(petToxicity).getByText("Toxic to cats and dogs if eaten.")).toBeInTheDocument();
+  expect(within(petToxicity).getAllByRole("link", { hidden: true })).toHaveLength(2);
+  expect(care.getAllByText("No cross-checked recommendation yet.").length).toBeGreaterThan(0);
+
+  fireEvent.change(screen.getByRole("textbox", { name: "Search by common or scientific name" }), {
+    target: { value: "Echinacea purpurea" },
+  });
+  expect(screen.getAllByText("Toxicity unverified. Safety is unknown.")).toHaveLength(2);
 });

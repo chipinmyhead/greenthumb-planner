@@ -61,6 +61,16 @@ const whiteOakExtension = virginia + "2901-1076/2901-1076.html";
 const blackEyedSusan = toolbox + "rudbeckia-hirta/";
 const blackEyedSusanGarden = finder + "277225";
 
+const poisonControl = "https://www.poison.org/articles/";
+const aspcaPlants = "https://www.aspca.org/pet-care/aspca-poison-control/toxic-and-non-toxic-plants/";
+const redMaplePlanting = "https://www.ncagr.gov/divisions/nc-forest-service/urban/north-carolina-arbor-day/arbor-day-giveaway/red-maple";
+const redMapleClemson = clemson + "maple/";
+const tuliptreeFlorida = "https://ask.ifas.ufl.edu/publication/ST363";
+const blackEyedSusanFlorida = "https://ask.ifas.ufl.edu/publication/FP512";
+const bigleafHydrangea = toolbox + "hydrangea-macrophylla/";
+const panicleHydrangea = toolbox + "hydrangea-paniculata/";
+const panicleHydrangeaRhs = rhs + "8944/hydrangea-paniculata/details";
+
 export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
   "Asclepias syriaca": {
     hardinessZone: recommendation("USDA zones 3–9.", commonMilkweed, commonMilkweedGarden),
@@ -68,6 +78,10 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     moisture: recommendation("Well-drained soil. Tolerates relatively dry conditions.", commonMilkweed, commonMilkweedGarden),
     wateringFrequency: perennialWater,
     transplantSeason: milkweedMoving,
+    matureSize: recommendation("Published garden guides put flowering stems at about 2–5 ft tall. The plant spreads by rhizomes and can form a colony wider than a single stem.", commonMilkweed, commonMilkweedGarden),
+    bloomSeason: recommendation("Summer, commonly June through August.", commonMilkweed, commonMilkweedGarden),
+    humanToxicity: recommendation("Poisonous if eaten. The sap can irritate skin and eyes.", commonMilkweed, poisonControl + "milkweed-can-cause-serious-poisoning-204"),
+    petToxicity: recommendation("Toxic to cats and dogs if eaten.", commonMilkweed, aspcaPlants + "milkweed"),
   },
   "Asclepias tuberosa": {
     hardinessZone: recommendation("USDA zones 3–9.", butterflyWeed, butterflyWeedGarden),
@@ -75,6 +89,11 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     moisture: recommendation("Well-drained soil. Dry sites are suitable once established.", butterflyWeed, butterflyWeedGarden),
     wateringFrequency: perennialWater,
     transplantSeason: milkweedMoving,
+    matureSize: recommendation("About 1–2 ft tall and 1–1½ ft wide.", butterflyWeed, finder + "276924"),
+    soilTexture: recommendation("Sandy soil works well. Clay can also work if it drains freely.", butterflyWeed, butterflyWeedGarden),
+    bloomSeason: recommendation("Summer, with timing varying by region.", butterflyWeed, butterflyWeedGarden),
+    humanToxicity: recommendation("Poisonous if eaten.", butterflyWeed, poisonControl + "milkweed-can-cause-serious-poisoning-204"),
+    petToxicity: recommendation("Toxic to cats and dogs if eaten.", butterflyWeed, aspcaPlants + "milkweed"),
   },
   "Acer rubrum": {
     hardinessZone: recommendation("USDA zones 3–9.", redMaple, redMapleExtension),
@@ -84,6 +103,9 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Early summer after leaves have fully expanded.", redMaple, minnesota + "pruning-trees-and-shrubs"),
     pruningInstructions: treePruning,
     transplantSeason: recommendation("Early spring while dormant is a good time to move a small tree.", transplantTrees, minnesota + "planting-and-transplanting-trees-and-shrubs"),
+    matureSize: recommendation("About 40–70 ft tall and 30–50 ft wide in typical landscapes. Some specimens grow taller.", redMaple, redMaplePlanting),
+    soilPh: recommendation("Slightly acidic soil is preferred.", redMaple, redMapleClemson),
+    bloomSeason: recommendation("Late winter to early spring, often before the leaves open.", redMapleExtension, redMapleClemson),
   },
   "Achillea millefolium": {
     light: recommendation("Full sun.", yarrow, yarrowGarden),
@@ -92,6 +114,9 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Optional deadheading after the first flush of flowers fades.", yarrowGarden, yarrow),
     pruningInstructions: recommendation("Cut spent flower stems back to lateral buds to encourage another flush of flowers.", yarrowGarden, yarrow),
     transplantSeason: recommendation("Divide and replant in spring.", rhs + "311/achillea-millefolium/details", dividePerennials),
+    matureSize: recommendation("Often about 1–3 ft tall and 1–3 ft across. It can spread beyond that by rhizomes.", yarrow, yarrowGarden),
+    bloomSeason: recommendation("Summer.", yarrow, yarrowGarden),
+    petToxicity: recommendation("Toxic to cats and dogs if eaten.", yarrow, aspcaPlants + "yarrow"),
   },
   "Echinacea purpurea": {
     hardinessZone: recommendation("USDA zones 3–8.", coneflowerGarden, growConeflowers),
@@ -101,6 +126,10 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Optional deadheading during flowering.", coneflowerGarden, growConeflowers),
     pruningInstructions: recommendation("Remove fading flower heads to limit self-seeding, or leave some seed heads in place.", coneflowerGarden, growConeflowers),
     transplantSeason: recommendation("Divide and replant established clumps in spring as growth begins.", dividePerennials, clemson + "echinacea/"),
+    matureSize: recommendation("Commonly about 3–4 ft tall and 1½–2 ft wide.", coneflower, coneflowerGarden),
+    soilTexture: recommendation("Well-drained loam is suitable. The plant can also grow in well-drained clay.", coneflower, "https://ask.ifas.ufl.edu/publication/fp192"),
+    soilPh: recommendation("Near-neutral soil is suitable.", coneflower, "https://ask.ifas.ufl.edu/publication/EP605"),
+    bloomSeason: recommendation("Summer, often with a strong early-summer flush.", coneflower, growConeflowers),
   },
   "Liriodendron tulipifera": {
     hardinessZone: recommendation("USDA zones 5–9.", tuliptree, tuliptreeExtension),
@@ -110,10 +139,18 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Winter, while dormant.", tuliptreeExtension, transplantTrees),
     pruningInstructions: treePruning,
     transplantSeason: recommendation("Move small trees in early spring, while dormant.", tuliptreeExtension, transplantTrees),
+    matureSize: recommendation("Allow room for a tree around 90 ft tall with a crown around 50 ft wide.", tuliptree, tuliptreeExtension),
+    soilTexture: recommendation("Loam is suitable if it drains well.", toolbox + "liriodendron-tulipifera/", tuliptreeFlorida),
+    soilPh: recommendation("Slightly acidic soil is preferred.", tuliptree, toolbox + "liriodendron-tulipifera/"),
+    bloomSeason: recommendation("Late spring to early summer.", tuliptree, tuliptreeFlorida),
   },
   "Parthenocissus quinquefolia": {
     light: recommendation("Full sun to partial shade.", creeper, creeperGarden),
     moisture: recommendation("Moderately moist, well-drained soil. Established vines tolerate drier conditions.", creeper, creeperGarden),
+    matureSize: recommendation("Can climb roughly 30–50 ft on a support. Its spread varies with support and pruning.", creeper, creeperGarden),
+    soilTexture: recommendation("Adapts to several textures, including sand, loam, and clay.", creeper, creeperGarden),
+    bloomSeason: recommendation("Late spring to early summer.", creeper, creeperGarden),
+    humanToxicity: recommendation("Berries are poisonous if eaten.", creeper, poisonControl + "virginia-creeper-and-wisteria-toxicity-192"),
   },
   "Quercus alba": {
     hardinessZone: recommendation("USDA zones 5–9.", whiteOak, whiteOakExtension),
@@ -123,6 +160,10 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Winter while dormant, before the local oak-wilt risk period.", whiteOakExtension, morton + "tree-plant-care/plant-care-resources/oak-wilt/"),
     pruningInstructions: treePruning,
     transplantSeason: recommendation("Transplant as a small tree in early spring.", whiteOakExtension, transplantTrees),
+    matureSize: recommendation("Published landscape guides describe trees around 50–100 ft tall. Allow roughly 80–100 ft for the crown of a large specimen.", whiteOak, whiteOakExtension),
+    soilTexture: recommendation("Well-drained loam, sandy soil, or clay loam can be suitable.", toolbox + "quercus-alba/", whiteOakExtension),
+    soilPh: recommendation("Acidic soil is preferred.", toolbox + "quercus-alba/", whiteOakExtension),
+    bloomSeason: recommendation("Spring.", toolbox + "quercus-alba/", whiteOak),
   },
   "Rudbeckia hirta": {
     hardinessZone: recommendation("USDA zones 3–7.", blackEyedSusan, blackEyedSusanGarden),
@@ -132,6 +173,10 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Optional deadheading as flowers fade.", blackEyedSusanGarden, clemson + "rudbeckia/"),
     pruningInstructions: recommendation("Remove spent blooms to reduce self-seeding and encourage more flowers.", blackEyedSusanGarden, clemson + "rudbeckia/"),
     transplantSeason: recommendation("Divide and replant surviving perennial clumps in spring.", dividePerennials, clemson + "rudbeckia/"),
+    matureSize: recommendation("Commonly about 2–3 ft tall. Allow about 2 ft of width per plant.", blackEyedSusan, blackEyedSusanFlorida),
+    soilTexture: recommendation("Well-drained clay, loam, or sand can be suitable.", blackEyedSusan, blackEyedSusanFlorida),
+    soilPh: recommendation("Acidic soil is suitable.", blackEyedSusan, blackEyedSusanFlorida),
+    bloomSeason: recommendation("Summer. Flowering can continue toward fall in favorable conditions.", blackEyedSusanGarden, growConeflowers),
   },
   "Hydrangea macrophylla": {
     hardinessZone: recommendation("USDA zones 6–9 for typical bigleaf hydrangeas. Check the cultivar in colder gardens.", toolbox + "hydrangea-macrophylla/", "https://www.missouribotanicalgarden.org/gardens-gardening/your-garden/help-for-the-home-gardener/advice-tips-resources/gardening-help-faqs/question/1187/how-do-i-prune-my-hydrangeas"),
@@ -141,6 +186,10 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("If pruning is needed, do it just after flowering for varieties that bloom on old wood.", marylandHydrangeas, rutgersHydrangeas),
     pruningInstructions: recommendation("Cut back selected flowered shoots just above healthy buds. Preserve the old stems that will carry next season’s flowers.", marylandHydrangeas, rutgersHydrangeas),
     transplantSeason: shrubTransplant,
+    matureSize: recommendation("About 3–6 ft tall and wide for many garden forms. Check the cultivar for its mature dimensions.", bigleafHydrangea, rutgersHydrangeas),
+    soilPh: recommendation("Acidic soil favors blue flowers on many cultivars. Higher pH favors pink, although cultivar and aluminum availability also matter.", bigleafHydrangea, rutgersHydrangeas),
+    bloomSeason: recommendation("Summer. Reblooming cultivars can flower again later in the season.", bigleafHydrangea, rutgersHydrangeas),
+    humanToxicity: recommendation("Plant parts can be harmful if eaten.", bigleafHydrangea, "https://www.poisonsinfo.health.qld.gov.au/plants-and-mushrooms/hydrangea-hydrangea-macrophylla"),
   },
   "Hydrangea paniculata": {
     hardinessZone: recommendation("USDA zones 3–8.", toolbox + "hydrangea-paniculata/", rutgersHydrangeas),
@@ -150,5 +199,9 @@ export const VERIFIED_PLANT_CARE: Partial<Record<string, PlantCare>> = {
     pruningSeason: recommendation("Late winter before new growth begins.", marylandHydrangeas, rutgersHydrangeas),
     pruningInstructions: recommendation("Thin or shorten selected shoots if needed. It flowers on new growth, so avoid a severe annual cutback that can leave weak, floppy stems.", marylandHydrangeas, rutgersHydrangeas),
     transplantSeason: shrubTransplant,
+    matureSize: recommendation("Unpruned standard forms can reach 15–20 ft tall and wide. Compact cultivars can be much smaller.", panicleHydrangea, rutgersHydrangeas),
+    soilTexture: recommendation("Well-drained loam, sand, or clay can be suitable.", panicleHydrangea, panicleHydrangeaRhs),
+    soilPh: recommendation("Acidic to neutral soil is suitable.", panicleHydrangea, panicleHydrangeaRhs),
+    bloomSeason: recommendation("Late summer into early fall.", panicleHydrangea, panicleHydrangeaRhs),
   },
 };

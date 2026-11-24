@@ -8,6 +8,12 @@ const careFields: ReadonlyArray<[keyof PlantCare, string]> = [
   ["pruningSeason", "When to prune"],
   ["pruningInstructions", "How to prune"],
   ["transplantSeason", "When to transplant"],
+  ["matureSize", "Mature height and spread"],
+  ["soilTexture", "Soil texture"],
+  ["soilPh", "Soil pH"],
+  ["bloomSeason", "Bloom season"],
+  ["humanToxicity", "Toxicity to people"],
+  ["petToxicity", "Toxicity to pets"],
 ];
 
 export default function PlantCareGuide({ care }: { care: PlantCare }) {
@@ -19,7 +25,11 @@ export default function PlantCareGuide({ care }: { care: PlantCare }) {
           <div key={key} className="py-2">
             <dt className="font-medium text-foreground">{label}</dt>
             <dd className="mt-1 text-muted-foreground">
-              {recommendation?.value ?? "No cross-checked recommendation yet."}
+              {recommendation?.value ?? (
+                key === "humanToxicity" || key === "petToxicity"
+                  ? "Toxicity unverified. Safety is unknown."
+                  : "No cross-checked recommendation yet."
+              )}
               {recommendation && (
                 <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs">
                   {recommendation.sources.map((source) => (
