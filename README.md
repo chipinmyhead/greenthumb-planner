@@ -82,9 +82,13 @@ retrieved on 2026-11-24. Run `python3 scripts/import-us-plants.py` to refresh it
 The [iNaturalist API](https://www.inaturalist.org/pages/api+reference) supplies
 taxon IDs, names, and observation counts.
 
-`src/data/verifiedPlantCare.ts` contains care guidance written from the
-intersection of at least two independently published sources for each species.
-Each entry links to its supporting sources. The original garden profiles and
-reminder settings are retained for existing gardens and identified separately
-from verified guidance. Species with no reminder intervals can be added to a
-garden and do not generate automatic reminders.
+`src/data/verifiedPlantCare.ts` is the horticultural lookup, keyed by species
+name. Its fields cover USDA hardiness zone, light, soil moisture, watering
+frequency, pruning season, pruning instructions, and transplant season. Each
+populated field links to two sources, such as university Extension gardening
+guides, botanical garden profiles, and the NC Extension Gardener Handbook.
+General watering recommendations describe when to check and water based on
+establishment and soil conditions. Missing fields are shown as awaiting review.
+The original garden profiles and reminder settings remain available to existing
+gardens as unverified settings. The lookup is a care reference and does not set
+automatic reminder intervals.

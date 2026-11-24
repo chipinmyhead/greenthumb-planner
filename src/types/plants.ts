@@ -1,3 +1,18 @@
+export interface CareRecommendation {
+  value: string;
+  sources: readonly [string, string, ...string[]];
+}
+
+export interface PlantCare {
+  hardinessZone?: CareRecommendation;
+  light?: CareRecommendation;
+  moisture?: CareRecommendation;
+  wateringFrequency?: CareRecommendation;
+  pruningSeason?: CareRecommendation;
+  pruningInstructions?: CareRecommendation;
+  transplantSeason?: CareRecommendation;
+}
+
 export interface Plant {
   id: string;
   name: string;
@@ -13,7 +28,7 @@ export interface Plant {
   fertilizerType?: string;
   notes?: string;
   observationCount?: number;
-  verifiedCare?: { guidance: string; sources: readonly string[] };
+  verifiedCare?: PlantCare;
 }
 
 export type PlantCategory = "shrub" | "tree" | "flower" | "grass" | "succulent" | "herb" | "vine";

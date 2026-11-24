@@ -78,7 +78,7 @@ it("saves an imported species without generating unverified reminders", () => {
   const garden = renderHook(useGarden, { wrapper: GardenProvider });
   act(() => garden.result.current.addPlant("inat-47911", "Front yard"));
   expect(garden.result.current.gardenPlants[0].plant.scientificName).toBe("Asclepias syriaca");
-  expect(garden.result.current.gardenPlants[0].plant.verifiedCare?.sources).toHaveLength(2);
+  expect(garden.result.current.gardenPlants[0].plant.verifiedCare?.light?.sources).toHaveLength(2);
   expect(garden.result.current.tasks).toEqual([]);
   garden.unmount();
 

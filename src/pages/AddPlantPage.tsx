@@ -1,3 +1,4 @@
+import PlantCareGuide from "@/components/PlantCareGuide";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
@@ -144,16 +145,7 @@ const AddPlantPage = () => {
               {plant.verifiedCare && (
                 <details className="mt-2 text-sm text-muted-foreground">
                   <summary className="cursor-pointer text-primary">Verified care guide</summary>
-                  <p className="mt-2">{plant.verifiedCare.guidance}</p>
-                  <ul className="mt-2 space-y-1">
-                    {plant.verifiedCare.sources.map((source) => (
-                      <li key={source}>
-                        <a href={source} target="_blank" rel="noreferrer" className="text-primary underline">
-                          {new URL(source).hostname}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  <PlantCareGuide care={plant.verifiedCare} />
                 </details>
               )}
             </motion.div>

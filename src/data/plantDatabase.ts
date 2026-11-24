@@ -754,6 +754,13 @@ const existingPlants: Plant[] = [
     fertilizerType: "Avoid nitrogen-heavy feeds — reduces blooming",
     notes: "Very vigorous — prune hard in late winter. Attracts hummingbirds.",
   },
+  {
+    id: "hort-hydrangea-paniculata",
+    name: "Panicle Hydrangea",
+    scientificName: "Hydrangea paniculata",
+    category: "shrub",
+    image: "🌸",
+  },
 ];
 
 const existingByName = new Map(existingPlants.map((plant) => [plant.scientificName.toLowerCase(), plant]));

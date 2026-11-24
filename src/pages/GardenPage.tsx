@@ -1,3 +1,4 @@
+import PlantCareGuide from "@/components/PlantCareGuide";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGarden } from "@/context/GardenContext";
@@ -58,8 +59,8 @@ const GardenPage = () => {
                 <p className="text-[11px] text-muted-foreground italic">{gp.plant.scientificName}</p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">📍 {gp.zone}</p>
 
-                {gp.plant.verifiedCare && (
-                  <p className="mt-2 text-xs text-muted-foreground">{gp.plant.verifiedCare.guidance}</p>
+                {gp.plant.verifiedCare?.light && (
+                  <p className="mt-2 text-xs text-muted-foreground">{gp.plant.verifiedCare.light.value}</p>
                 )}
                 {!gp.plant.notes && !gp.plant.verifiedCare && (
                   <p className="mt-2 text-xs text-muted-foreground">Care guidance has not been verified for this species.</p>
@@ -129,16 +130,7 @@ const GardenPage = () => {
                 {selectedPlant.plant.verifiedCare && (
                   <section className="space-y-2">
                     <h3 className="font-semibold">Verified care guidance</h3>
-                    <p className="text-sm text-muted-foreground">{selectedPlant.plant.verifiedCare.guidance}</p>
-                    <ul className="space-y-1 text-sm">
-                      {selectedPlant.plant.verifiedCare.sources.map((source) => (
-                        <li key={source}>
-                          <a href={source} target="_blank" rel="noreferrer" className="text-primary underline">
-                            {new URL(source).hostname}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                    <PlantCareGuide care={selectedPlant.plant.verifiedCare} />
                   </section>
                 )}
                 {!selectedPlant.plant.notes && !selectedPlant.plant.verifiedCare && (
